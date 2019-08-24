@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
 import { Text, View, TextInput, Alert } from 'react-native';
-import Input from './Input';
-import Button from './Button';
+import Input from '../../ui_elems/Input';
+import Button from '../../ui_elems/Button';
 
-class RegisterForm extends Component {
+class Register extends Component {
     state = { firstName: "", lastName: "", email: "", username: "", password: "" }
 
     signup = () => {
         Alert.alert("Signed Up!")
     }
     
-
     render(){
     return (
         <View>
@@ -65,4 +64,4 @@ class RegisterForm extends Component {
 };
 }
 
-export default RegisterForm;
+export default Register;
