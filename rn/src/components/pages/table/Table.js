@@ -6,8 +6,10 @@ class Table extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      max: 6,
       status: 'Available',
-      players: ['Fred', 'Wayne', 'Michael', 'Lucas'],
+      players: ['Fred', 'Wayne', 'Michael', 'Lucas', "Aizen"],
+      joinRequests: ['Jimmy Zhang', 'Bool Ceanz'],
     };
   }
   requestJoin = () => {
@@ -24,21 +26,34 @@ class Table extends Component {
     return (
       <View>
         <Text> Fred's Table{'\n'}</Text>
-        <Text>Current Players{'\n'}</Text>
+        <Text>Current Players {this.state.players.length}/{this.state.max}{'\n'}</Text>
 
         {this.state.players.map((data, key) => {
           return (
-            <TouchableOpacity
-              key={key}
-              onPress={this.navigateToProfile}>
+            <TouchableOpacity key={key} onPress={this.navigateToProfile}>
               <Text>
                 {data} {'\n'}
               </Text>
             </TouchableOpacity>
           );
         })}
-        <ButtonSmall text="Request to Join" onPress={this.requestJoin} />
-        <Text>Status: {this.state.status}</Text>
+
+        <Button text="Request to Join" onPress={this.requestJoin} />
+        <Text>
+          Status: {this.state.status}
+          {'\n\n'}
+        </Text>
+
+        <Text>Join Requests{'\n'}</Text>
+        {this.state.joinRequests.map((request, key) => {
+          return (
+            <View key={key}>
+              <Text>{request}</Text>
+              <Button text="Accept"/>
+              <Button text="Reject"/>
+            </View>
+          );
+        })}
       </View>
     );
   }
