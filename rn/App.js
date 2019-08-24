@@ -6,31 +6,25 @@
  * @flow
  */
 
-import React, { Component } from 'react';
-import AppContainer from './src/stack_navigation';
-import BottomAppContainer from './src/bottom_navigation';
-import SideAppNavigator from './src/side_navigation';
+import React, {Component} from 'react';
+import Navigator from './src/navigators';
 import GlobalFont from 'react-native-global-font';
+import {createStore, applyMiddleware} from 'redux';
+import {Provider} from 'react-redux';
+import axiosMiddleware from 'redux-axios-middleware';
+import reducers from './src/reducers';
+import server from './src/api/server';
 
-export default class App extends Component {
-  state = { loggedIn: true }
+const store = createStore(reducers, applyMiddleware(axiosMiddleware(server)));
 
+class App extends Component {
   componentDidMount() {
     GlobalFont.applyGlobal('Rubik-Medium');
   }
 
-  updateLogin(newLogin) {
-    this.setState({ loggedIn: newLogin })
-  }
-
-  renderNavigator = () => {
-    if(this.state.loggedIn){
-      return <BottomAppContainer />
-    }
-    return <AppContainer />
-  }
-
   render() {
-    return this.renderNavigator()
+    return <Provider store={store}><Navigator /></Provider>;
   }
 }
+
+export default App;

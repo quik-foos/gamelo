@@ -1,11 +1,10 @@
-import { createStackNavigator, 
-         createAppContainer } from "react-navigation";
-import Home from './components/pages/home/Home.js';
-import Register from './components/pages/register/Register.js';
-import Login from './components/pages/login/Login.js';
+import { createStackNavigator, createAppContainer, createMaterialTopTabNavigator } from "react-navigation";
+import Home from '../components/pages/home/Home.js';
+import Register from '../components/pages/register/Register.js';
+import Login from '../components/pages/login/Login.js';
 
 
-const AppNavigator = createStackNavigator(
+const StackNavigator = createStackNavigator(
     {
       Home: {
         screen: Home,
@@ -31,4 +30,4 @@ const AppNavigator = createStackNavigator(
     }
 );
 
-export default AppContainer = createAppContainer(AppNavigator);
+export default AppContainer = createAppContainer(StackNavigator);

@@ -7,9 +7,11 @@ import {
   Alert,
   ToastAndroid,
 } from 'react-native';
+import {connect} from 'react-redux';
 import Input from '../../ui_elems/Input';
 import Button from '../../ui_elems/Button';
 import {UserApi} from '../../../api';
+import {loginAction} from '../../../actions';
 
 class Register extends Component {
   state = {
@@ -32,15 +34,18 @@ class Register extends Component {
         password: this.state.password,
       });
       await this.setState({loading: false});
+      await this.props.dispatch(loginAction(this.state.username));
     } catch (e) {
       await this.setState({loading: false});
-      ToastAndroid.show(e.response.data.message, ToastAndroid.SHORT)
+      console.log(e)
+      ToastAndroid.show(e.response.data.message, ToastAndroid.SHORT);
     }
   };
 
   getLoader = () => {
-    if (this.state.loading) return <ActivityIndicator size="large" color="#00ff00" />
-  }
+    if (this.state.loading)
+      return <ActivityIndicator size="large" color="#00ff00" />;
+  };
 
   render() {
     return (
@@ -90,4 +95,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default connect()(Register);

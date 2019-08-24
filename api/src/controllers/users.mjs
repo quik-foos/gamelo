@@ -38,7 +38,7 @@ const findOne = (req, res) => {
     } else if (user) {
       res.send(user)
     } else {
-      res.send({ error: 'User not found' })
+      res.status(404).send({ error: 'User not found' })
     }
   })
 }
@@ -94,8 +94,7 @@ const destroy = (req, res) => {
     username: req.params.username
   }, error => {
     if (error) {
-      console.log(error)
-      res.status(500).send(error)
+      res.status(404).send({ message: 'User not found'})
     } else {
       res.send({
         message: 'User deleted successfully'
