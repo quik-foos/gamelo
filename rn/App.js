@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, {Fragment} from 'react';
+import React, {Fragment, Component} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,6 +14,7 @@ import {
   View,
   Text,
   StatusBar,
+  Alert
 } from 'react-native';
 
 import {
@@ -23,9 +24,24 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import Header from './src/components/Header'
+import BackgroundImage from './src/components/BackgroundImage';
+import Input from './src/components/Input';
+import Header from './src/components/Header';
+import Button from './src/components/Button';
 
-const App = () => {
+
+class App extends Component {
+
+  state = {email: "", password: ""}
+  register = () => {
+    Alert.alert('Registered!')
+  }
+
+  login = () => {
+    Alert.alert('Logged In')
+  }
+
+  render(){
   return (
     <Fragment>
       <StatusBar barStyle="dark-content" />
@@ -33,21 +49,22 @@ const App = () => {
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
-          <Header title="Gamelo"/>
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
+          <Header title="Gamelo" />
+          <BackgroundImage />
           <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Gamelo</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
+            {/* <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Login</Text>
+            </View> */}
+            <Text></Text>
+            <Text></Text>
+            <Text></Text>
+            <Text></Text>
+            <Button text='Register' onPress={() => this.register()} />
+            <Text></Text>
+            <Text></Text>
+            <Button text='Log In' onPress={() => this.login()} />
+
+            {/* <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>See Your Changes</Text>
               <Text style={styles.sectionDescription}>
                 <ReloadInstructions />
@@ -65,12 +82,13 @@ const App = () => {
                 Read the docs to discover what to do next:
               </Text>
             </View>
-            <LearnMoreLinks />
+            <LearnMoreLinks /> */}
           </View>
         </ScrollView>
       </SafeAreaView>
     </Fragment>
   );
+};
 };
 
 const styles = StyleSheet.create({

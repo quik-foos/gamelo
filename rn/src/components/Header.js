@@ -1,55 +1,34 @@
-/**
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- * @flow
- * @format
- */
-
-'use strict';
-
 import React from 'react';
-import {Text, StyleSheet, ImageBackground} from 'react-native';
-import Colors from '../../node_modules/react-native/Libraries/NewAppScreen/components/Colors';
+import { Text, View } from 'react-native';
 
-const Header = (props) => (
-  <ImageBackground
-    accessibilityRole={'image'}
-    source={require('./../../node_modules/react-native/Libraries/NewAppScreen/components/logo.png')}
-    style={styles.background}
-    imageStyle={styles.logo}>
-    <Text style={styles.text}>{props.title}</Text>
-  </ImageBackground>
-);
+const Header = (props) => {
+    const { viewStyle, textStyle } = styles;
+    return (
+        <View style={viewStyle}>
+            <Text style={textStyle}>{props.title}</Text>
+        </View>
+    );
+};
 
-const styles = StyleSheet.create({
-  background: {
-    paddingBottom: 40,
-    paddingTop: 96,
-    paddingHorizontal: 32,
-    backgroundColor: Colors.lighter,
-  },
-  logo: {
-    opacity: 0.2,
-    overflow: 'visible',
-    resizeMode: 'cover',
-    /*
-     * These negative margins allow the image to be offset similarly across screen sizes and component sizes.
-     *
-     * The source logo.png image is 512x512px, so as such, these margins attempt to be relative to the
-     * source image's size.
-     */
-    marginLeft: -128,
-    marginBottom: -192,
-  },
-  text: {
-    fontSize: 40,
-    fontWeight: '600',
-    textAlign: 'center',
-    color: Colors.black,
-  },
-});
+
+const styles = {
+    textStyle: {
+        fontSize: 30,
+        color: 'black'
+    },
+    viewStyle: {
+        backgroundColor: '#F8F8F8',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 60,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 1,
+        elevation: 20,
+        paddingTop: 30,
+        paddingBottom: 30,
+        position: 'relative'
+    }
+};
 
 export default Header;
