@@ -1,9 +1,13 @@
-import React, {Component} from 'react';
-import {View} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text } from 'react-native';
 
 class Profile extends Component {
   render() {
-    return <View />;
+    return (
+      <View>
+        <Text> THIS MY PAGE BOIII</Text>
+      </View>
+    );
   }
 }
 

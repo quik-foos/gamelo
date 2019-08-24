@@ -1,4 +1,5 @@
-import { createStackNavigator, createAppContainer, createMaterialTopTabNavigator } from "react-navigation";
+import { createStackNavigator, 
+         createAppContainer } from "react-navigation";
 import Home from './components/pages/home/Home.js';
 import Register from './components/pages/register/Register.js';
 import Login from './components/pages/login/Login.js';
