@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react';;
 import {Text, View, TextInput, Alert} from 'react-native';
 import Input from '../../ui_elems/Input';
 import Button from '../../ui_elems/Button';
@@ -7,7 +7,7 @@ class Login extends Component {
   state = {firstName: '', lastName: '', email: '', password: ''};
 
   signup = () => {
-    Alert.alert('Signed In!');
+    Alert.alert('Signed In!');;
   };
 
   render() {
@@ -27,9 +27,14 @@ class Login extends Component {
           secureTextEntry={true}
           onChangeText={password => this.setState({password})}
         />
-        <Text></Text>
+        <Text />
         <View style={{height: 50}}>
-          <Button text="Sign In" onPress={() => this.signup()} />
+          <Button
+            text="Sign In"
+            onPress={() => {
+              this.props.navigation.navigate('Explore');
+            }}
+          />
         </View>
       </View>
     );
