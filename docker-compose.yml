@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  client:
+    container_name: client
+    image: client:latest
+    environment:
+      - API_URL=192.168.2.31:8000
+    build:
+      context: ./client
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      - ./client/src:/app/src
+    ports:
+      - '3000:3000'
+
+  api:
+    container_name: api
+    image: api:latest
+    build:
+      context: ./api
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - '8000:8000'
+    environment:
+      - DATABASE_URL=db:27017
+      - PORT=8000
+      - API_URL=192.168.2.31:8000
+    depends_on: 
+      - db
+    volumes:
+      - ./api/src:/app/src
+    command:
+      - ./node_modules/nodemon/bin/nodemon.js
+      - "--experimental-modules"
+      - "--legacy-watch"
+      - "--inspect=0.0.0.0"
+      - "./src/app.mjs" 
+
+  db:
+    container_name: db
+    image: mongo:4.0.5
+    ports:
+      - '27017:27017'
+    volumes:
+      - db_volume:/data/db
+    command: mongod --port 27017
+
+volumes:
+  db_volume:
+    external: true
