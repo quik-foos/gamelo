@@ -16,22 +16,10 @@ const input = (props) => {
 
 const styles = {
   viewStyles: {
-    margin: 9,
-    padding: 9,
-    paddingTop: 14,
-    borderColor: '#fff',
-    height: 50,
-    flex: 3,
-    flexDirection: "row",
-    alignItems: "center"
   },
   textStyles: {
-    flex: 1,
-    fontSize: 20
   },
   textInputStyles: {
-    height: 50,
-    flex: 2
   }
 }
 export default input;
