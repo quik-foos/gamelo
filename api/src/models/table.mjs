@@ -22,4 +22,17 @@ const TableSchema = new Schema({
   },
 })
 
+const deepPopulate = function(next) {
+  this.populate('host', 'firstName lastName username')
+  this.populate('games')
+  this.populate('players', 'firstName lastName username')
+  this.populate('joinRequests', 'firstName lastName username')
+  next()
+}
+
+// Populate embedded documents
+TableSchema
+  .pre('find', deepPopulate)
+  .pre('findOne', deepPopulate)
+
 export default mongoose.model('Table', TableSchema)

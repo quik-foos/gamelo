@@ -11,4 +11,18 @@ const ResultSchema = new Schema({
   winner: [{ type: Schema.ObjectId, ref: 'User' }]
 })
 
+const deepPopulate = function(next) {
+  this.populate('game')
+  this.populate('players', 'firstName lastName username')
+  this.populate('validatedPlayers', 'firstName lastName username')
+  this.populate('winner', 'firstName lastName username')
+  this.populate('table')
+  next()
+}
+
+// Populate embedded documents
+ResultSchema
+  .pre('find', deepPopulate)
+  .pre('findOne', deepPopulate)
+
 export default mongoose.model('Result', ResultSchema)
