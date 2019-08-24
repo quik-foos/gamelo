@@ -18,6 +18,7 @@ import BackgroundImage from './BackgroundImage';
 import Logo from './Logo';
 import Header from '../../Header';
 import Button from '../../ui_elems/Button';
+import { BACKGROUND_COLOR, BUTTON_COLOR } from '../../../constants';
 
 class Home extends Component {
   render() {
@@ -47,7 +48,7 @@ export default Home;
 const styles = StyleSheet.create({
   mainView: {
     flex: 1,
-    backgroundColor: '#0BB',
+    backgroundColor: BACKGROUND_COLOR,
     justifyContent: 'center',
     alignItems: 'stretch',
     padding: 20,

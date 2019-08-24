@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
+import { BUTTON_COLOR } from '../../constants';
 
 const Button = ({onPress, text}) => {
   const {buttonStyle, textStyle} = styles;
@@ -12,7 +13,7 @@ const Button = ({onPress, text}) => {
 
 const styles = {
   buttonStyle: {
-    backgroundColor: '#066',
+    backgroundColor: BUTTON_COLOR,
     borderRadius: 5,
     margin: 10,
     padding: 20,

@@ -40,7 +40,7 @@ const BottomAppNavigator = createMaterialTopTabNavigator(
       }
     },
     {
-      initialRouteName: "Home",
+      initialRouteName: "Explore",
       tabBarPosition: 'bottom',
       tabBarOptions: {
         style: {
