@@ -25,14 +25,20 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import BackgroundImage from './src/components/BackgroundImage';
-import Input from './src/components/Input';
+
+
 import Header from './src/components/Header';
 import Button from './src/components/Button';
 
+import RegisterForm from './src/components/RegisterForm';
+import LoginForm from './src/components/LoginForm';
 
-class App extends Component {
 
-  state = {email: "", password: ""}
+import { createStackNavigator, createAppContainer } from "react-navigation";
+
+
+class HomeScreen extends Component {
+
   register = () => {
     Alert.alert('Registered!')
   }
@@ -52,37 +58,14 @@ class App extends Component {
           <Header title="Gamelo" />
           <BackgroundImage />
           <View style={styles.body}>
-            {/* <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Login</Text>
-            </View> */}
             <Text></Text>
             <Text></Text>
             <Text></Text>
             <Text></Text>
-            <Button text='Register' onPress={() => this.register()} />
+            <Button text='Register' onPress={() => this.props.navigation.navigate('Register')} />
             <Text></Text>
             <Text></Text>
-            <Button text='Log In' onPress={() => this.login()} />
-
-            {/* <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks /> */}
+            <Button text='Log In' onPress={() => this.props.navigation.navigate('Login')} />
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -90,6 +73,52 @@ class App extends Component {
   );
 };
 };
+
+class RegisterScreen extends Component {
+  render(){
+    return(
+      <RegisterForm />   
+    )
+  }
+}
+
+class LoginScreen extends Component {
+  render(){
+    return(
+      <LoginForm />   
+    )
+  }
+}
+
+
+const AppNavigator = createStackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+      navigationOptions: {
+        header: null
+      }
+    },
+    Register: {
+      screen: RegisterScreen,
+      navigationOptions: {
+        title: "Register Form"
+      }
+    },
+    Login: {
+      screen: LoginScreen,
+      navigationOptions: {
+        title: "Login Form"
+      }
+    }
+  },
+  {
+    initialRouteName: "Home"
+  }
+);
+
+const AppContainer = createAppContainer(AppNavigator);
+
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -130,4 +159,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default class App extends React.Component {
+  render() {
+    return <AppContainer />;
+  }
+}
