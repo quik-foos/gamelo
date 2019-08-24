@@ -12,6 +12,7 @@
     "moment": "^2.24.0",
     "react": "16.8.6",
     "react-native": "0.60.5",
+    "react-native-check-box": "^2.1.7",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-global-font": "^1.0.2",
     "react-native-modal-datetime-picker": "^7.5.0",
