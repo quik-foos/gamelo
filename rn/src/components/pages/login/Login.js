@@ -33,7 +33,6 @@ class Login extends Component {
             <View style={{ height:50 }}>
                 <Button  text='Sign In' onPress={() => this.signup()} />
             </View>
-        
         </View>
   );
 };
