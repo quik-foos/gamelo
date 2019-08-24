@@ -16,7 +16,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import BackgroundImage from './BackgroundImage';
 import Logo from './Logo';
-import Header from '../../Header';
+import Header from '../../ui_elems/Header';
 import Button from '../../ui_elems/Button';
 import { BACKGROUND_COLOR, BUTTON_COLOR } from '../../../constants';
 

@@ -1,16 +1,25 @@
 import React, {Component} from 'react';
-import {Text, View, TextInput, Alert, ToastAndroid} from 'react-native';
+import {
+  Text, 
+  View, 
+  TextInput, 
+  Alert, 
+  ToastAndroid,
+  ActivityIndicator} from 'react-native';
 import Input from '../../ui_elems/Input';
 import Button from '../../ui_elems/Button';
 import {connect} from 'react-redux';
 import {UserApi} from '../../../api';
 import {loginAction} from '../../../actions';
+import { BUTTON_COLOR } from '../../../constants';
+
 
 class Login extends Component {
-  state = {username: '', password: ''};
+  state = {username: '', password: '', loading: false};
 
   login = async () => {
     try {
+      await this.setState({loading: true});
       let res = await UserApi.login({
         username: this.state.username,
         password: this.state.password,
@@ -24,9 +33,20 @@ class Login extends Component {
     }
   };
 
+  getLoader = () => {
+    if (this.state.loading)
+      return (
+        <View style={{marginTop: 50}}>
+          <ActivityIndicator size="large" color={BUTTON_COLOR} />
+        </View>
+      )
+  };
+
   render() {
     return (
       <View>
+        <Text>
+        </Text>
         <Input
           label="Username"
           placeholder="username"
@@ -45,6 +65,7 @@ class Login extends Component {
         <View style={{height: 50}}>
           <Button text="Sign In" onPress={this.login} />
         </View>
+        {this.getLoader()}
       </View>
     );
   }

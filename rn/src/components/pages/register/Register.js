@@ -12,6 +12,8 @@ import Input from '../../ui_elems/Input';
 import Button from '../../ui_elems/Button';
 import {UserApi} from '../../../api';
 import {loginAction} from '../../../actions';
+import { BUTTON_COLOR } from '../../../constants';
+
 
 class Register extends Component {
   state = {
@@ -24,8 +26,8 @@ class Register extends Component {
   };
 
   signup = async () => {
+    this.setState({loading: true})
     try {
-      await this.setState({loading: true});
       UserApi.create({
         firstName: this.state.firstName,
         lastName: this.state.lastName,
@@ -48,12 +50,18 @@ class Register extends Component {
 
   getLoader = () => {
     if (this.state.loading)
-      return <ActivityIndicator size="large" color="#00ff00" />;
+      return (
+        <View style={{marginTop: 50}}>
+          <ActivityIndicator size="large" color={BUTTON_COLOR} />
+        </View>
+      )
   };
 
   render() {
     return (
       <View>
+        <Text>
+        </Text>
         <Input
           label="First Name"
           placeholder="First Name"
