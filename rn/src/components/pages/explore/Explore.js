@@ -13,6 +13,7 @@ export default class Explore extends Component {
             host="Fred"
             distance="600m"
             start="6pm"
+            {...this.props}
           />
 
           <NearbyTable
