@@ -1,40 +1,39 @@
-import { createStackNavigator, createAppContainer, createMaterialTopTabNavigator } from "react-navigation";
-import Home from './components/pages/home/Home.js';
-import Register from './components/pages/register/Register.js';
-import Login from './components/pages/login/Login.js';
+import { createAppContainer, 
+         createMaterialTopTabNavigator } from "react-navigation";
+
+import React from 'react';
 import Explore from './components/pages/explore/Explore.js';
 import Table from './components/pages/table/Table.js';
+import Profile from './components/pages/profile/Profile.js';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const BottomAppNavigator = createMaterialTopTabNavigator(
     {
-      Home: {
-        screen: Home,
-        navigationOptions: {
-          header: null
-        }
-      },
-      Register: {
-        screen: Register,
-        navigationOptions: {
-          title: "Register"
-        }
-      },
-      Login: {
-        screen: Login,
-        navigationOptions: {
-          title: "Login"
-        }
-      },
       Explore: {
         screen: Explore,
         navigationOptions: {
-          title: "Explore"
+          title: "Explore",
+          tabBarIcon: ({ tintColor }) => (
+            <Icon name="md-search" color={tintColor} size={24} />
+          )
         }
       },
       Table: {
-        screen: Table,
+        screen: Table,  
         navigationOptions:{
-          title: "Join Table"
+          title: "My Table",
+          tabBarIcon: ({ tintColor }) => (
+            <Icon name="logo-game-controller-b" color={tintColor} size={24} />
+          )
+        }
+      },
+      Profile: {
+        screen: Profile,
+        navigationOptions:{
+          title: "My Profile",
+          tabBarIcon: ({ tintColor }) => (
+            <Icon name="ios-contact" color={tintColor} size={24} />
+          )
         }
       }
     },
@@ -42,12 +41,15 @@ const BottomAppNavigator = createMaterialTopTabNavigator(
       initialRouteName: "Explore",
       tabBarPosition: 'bottom',
       tabBarOptions: {
+        labelStyle: {
+          fontSize: 12,
+        },
         style: {
           backgroundColor: '#f2f2f2',
           borderTopWidth: 0.5,
           borderTopColor: 'grey'
         },
-        activeTintColor: 'orange',
+        activeTintColor: '#066',
         inactiveTintColor: 'grey',
         showIcon: true,
       }
