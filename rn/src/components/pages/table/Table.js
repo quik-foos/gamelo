@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, Alert, TouchableOpacity} from 'react-native';
-import Button from '../../ui_elems/Button';
+import ButtonSmall from '../../ui_elems/ButtonSmall';
 
 class Table extends Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class Table extends Component {
             </TouchableOpacity>
           );
         })}
-        <Button text="Request to Join" onPress={this.requestJoin} />
+        <ButtonSmall text="Request to Join" onPress={this.requestJoin} />
         <Text>Status: {this.state.status}</Text>
       </View>
     );

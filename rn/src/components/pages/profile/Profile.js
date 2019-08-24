@@ -10,7 +10,10 @@ import {
 import { BUTTON_COLOR } from '../../../constants';
 import { connect } from 'react-redux';
 import { UserApi } from '../../../api';
-import {logoutAction} from '../../../actions';
+import { logoutAction } from '../../../actions';
+import ButtonSmall from '../../../components/ui_elems/ButtonSmall'
+import Explore from '../../../components/pages/explore/Explore'
+import { ScrollView } from 'react-native-gesture-handler';
 
 class Profile extends Component {
 
@@ -24,9 +27,9 @@ class Profile extends Component {
   }
   async componentDidMount(){
     console.log("I am here")
-    console.log(this.props.username)
+    console.log(this.props.user)
     try{
-      res = await UserApi.findOne({id: this.props.username})
+      res = await UserApi.findOne({id: this.props.user})
       console.log(res)
       currentUser = res.data
       console.log(currentUser)
@@ -43,7 +46,6 @@ class Profile extends Component {
   }
 
   signout = async () => {
-    console.log("Clicked Signout")
     try {
       await this.setState({loading: true});
       await UserApi.logout();
@@ -57,23 +59,23 @@ class Profile extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-          <View style={styles.header}></View>
-          <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
-          <View style={styles.body}>
-            <View style={styles.bodyContent}>
-              <Text style={styles.name}>{`${this.state.firstName} ${this.state.lastName}`}</Text>
-              <Text style={styles.info}>{this.state.username}</Text>
-              <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text>
-              <TouchableOpacity style={styles.buttonContainer}>
-                <Text style={{color: "white"}} onPress={this.signout}>Sign Out</Text>  
-              </TouchableOpacity>              
-              <TouchableOpacity style={styles.buttonContainer}>
-                <Text style={{color: "white"}}>Opcion 2</Text> 
-              </TouchableOpacity>
-            </View>
+        <View style={styles.container}>
+            <View style={styles.header}></View>
+            <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
+            <View style={styles.body}>
+              <View style={styles.bodyContent}>
+                <Text style={styles.name}>{`${this.state.firstName} ${this.state.lastName}`}</Text>
+                <Text style={styles.info}>{this.state.username}</Text>
+                {/* <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text> */}
+                <ButtonSmall text="Sign Out" onPress={this.signout} /> 
+                <Text>
+                </Text>
+                <Text>
+                </Text>
+              </View>
+          </View>
         </View>
-      </View>
+
     );
   }
 }
@@ -122,23 +124,12 @@ const styles = StyleSheet.create({
     color: "#696969",
     marginTop:10,
     textAlign: 'center'
-  },
-  buttonContainer: {
-    marginTop:10,
-    height:45,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom:20,
-    width:250,
-    borderRadius:30,
-    backgroundColor: BUTTON_COLOR,
-  },
+  }
 });
 
 const mapStateToProps = state => {
   return {
-    username: state.username
+    user: state.user
   }
 }
 

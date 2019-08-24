@@ -18,6 +18,7 @@ import BackgroundImage from './BackgroundImage';
 import Logo from './Logo';
 import Header from '../../ui_elems/Header';
 import Button from '../../ui_elems/Button';
+import ButtonSmall from '../../ui_elems/ButtonSmall';
 import { BACKGROUND_COLOR, BUTTON_COLOR } from '../../../constants';
 
 class Home extends Component {
