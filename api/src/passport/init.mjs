@@ -1,12 +1,13 @@
 import login from './login.mjs'
 import signup from './signup.mjs'
+import User from '../models/user.mjs'
 
 const init = passport => {
   passport.serializeUser((user, done) => {
     done(null, user)
   })
         
-  passport.deserializeUser((user, done) => {
+  passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => {
       done(err, user)
     })

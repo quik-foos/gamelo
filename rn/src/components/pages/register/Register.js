@@ -26,10 +26,14 @@ class Register extends Component {
   signup = async () => {
     try {
       await this.setState({loading: true});
-      const res = await UserApi.create({
+      UserApi.create({
         firstName: this.state.firstName,
         lastName: this.state.lastName,
         email: this.state.email,
+        username: this.state.username,
+        password: this.state.password,
+      });
+      UserApi.login({
         username: this.state.username,
         password: this.state.password,
       });
@@ -37,7 +41,6 @@ class Register extends Component {
       await this.props.dispatch(loginAction(this.state.username));
     } catch (e) {
       await this.setState({loading: false});
-      console.log(e)
       ToastAndroid.show(e.response.data.message, ToastAndroid.SHORT);
     }
   };

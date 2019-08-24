@@ -107,22 +107,22 @@ const login = passport => {
   return (req, res, next) => {
     passport.authenticate('login', (err, user) => {
       if (err) {
-        return res.send({
+        return res.status(404).send({
           success: false,
-          message: err
+          message: 'Incorrect username or password'
         })
       }
       if (!user) {
-        return res.send({
+        return res.status(404).send({
           success: false,
-          error: 'Incorrect username or password'
+          message: 'Incorrect username or password'
         })
       }
       req.login(user, err => {
         if (err) {
-          return res.send({
+          return res.status(404).send({
             success: false,
-            error: err
+            message: 'Incorrect username or password'
           })
         }
         return res.send({ success: true })
