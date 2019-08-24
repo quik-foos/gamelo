@@ -1,4 +1,4 @@
-import { User } from '../router/users/schema.mjs'
+import User from '../models/user.mjs'
 import passportLocal from 'passport-local'
 const LocalStrategy = passportLocal.Strategy
 

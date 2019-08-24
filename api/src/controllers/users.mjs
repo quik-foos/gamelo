@@ -1,16 +1,17 @@
-import { User } from './schema.mjs'
+import User from '../models/user.mjs'
+
+const findAll = (req, res) => {
+  res.status(405)
+}
 
 // Get user
-const getUser = (req, res) => {
-  console.log(req.user)
-  console.log(req.isAuthenticated())
+const findOne = (req, res) => {
   User.findOne({
     username: req.params.username
   }, (error, user) => {
     if (error) {
       console.log(error)
       res.status(403).send(error)
-      return
     } else if (user) {
       res.send(user)
     } else {
@@ -20,68 +21,70 @@ const getUser = (req, res) => {
 }
 
 // Create a user
-const createUser = (req, res) => {
+const create = (req, res) => {
   new User({
     ...req.body
   }).save((error, user) => {
-    if (error) {
+    if (error || !user) {
       console.log(error)
-      res.status(403).send(error)
-      return
+      res.status(500).send(error)
+    } else {
+      res.send({
+        message: 'User created successfully',
+        user: user
+      })
     }
-    res.send({
-      message: 'User created successfully',
-      user: user
-    })
   })
 }
 
 // Update a user
-const updateUser = (req, res) => {
+const update = (req, res) => {
   User.findOne({
     username: req.params.username
   }, (error, user) => {
-    if (error || !user) {
+    if (error) {
       console.log(error)
       res.status(500).send(error)
-      return
-    }
-    Object.keys(req.body).forEach( key => {
-      if (req.body) {
-        tile[key] = req.body[key]
-      }
-    })
-    user.save((error, user) => {
-      if (error) {
-        console.log(error)
-        res.status(500).send(error)
-        return
-      }
-      res.send({
-        message: 'User updated successfully',
-        user: user
+    } else if (user) {
+      Object.keys(req.body).forEach( key => {
+        if (req.body) {
+          tile[key] = req.body[key]
+        }
       })
-    })
+      user.save((error, user) => {
+        if (error || !user) {
+          console.log(error)
+          res.status(500).send(error)
+          return
+        }
+        res.send({
+          message: 'User updated successfully',
+          user: user
+        })
+      })
+    } else {
+      res.status(404).send({ message: 'User not found' })
+    }
   })
 }
 
 // Delete a user
-const deleteUser = (req, res) => {
+const destroy = (req, res) => {
   User.remove({
     username: req.params.username
   }, error => {
     if (error) {
       console.log(error)
       res.status(500).send(error)
-      return
+    } else {
+      res.send({
+        message: 'User deleted successfully'
+      })
     }
-    res.send({
-      message: 'User deleted successfully'
-    })
   })
 }
 
-const login = (passport) => {
+const login = passport => {
   return (req, res, next) => {
     passport.authenticate('login', (err, user) => {
       if (err) {
@@ -114,12 +117,12 @@ const logout = (req, res) => {
   res.send({ success: true })
 }
 
-export default (express, passport) => {
-  return express.Router()
-    .get('/users/:username', getUser)
-    .post('/users', createUser)
-    .put('/users/:username', updateUser)
-    .delete('/users/:username', deleteUser)
-    .post('/login', login(passport))
-    .post('/logout', logout)
+export default {
+  findAll,
+  findOne,
+  create,
+  update,
+  destroy,
+  login,
+  logout
 }

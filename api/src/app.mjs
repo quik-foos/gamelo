@@ -6,11 +6,7 @@ import expressSession from 'express-session'
 import mongoose from 'mongoose'
 import passport from 'passport'
 import initPassport from './passport/init.mjs'
-import {
-  games,
-  posts,
-  users
-} from './router/index.mjs'
+import router from './router.mjs'
 
 // DB Setup
 mongoose.connect(`mongodb://${process.env.DATABASE_URL}`)
@@ -51,9 +47,7 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.options('*', cors())
 
-app.use('/api', posts(express, passport))
-app.use('/api', games(express, passport))
-app.use('/api', users(express, passport))
+app.use('/api', router(express, passport))
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on ${process.env.API_URL}`)
