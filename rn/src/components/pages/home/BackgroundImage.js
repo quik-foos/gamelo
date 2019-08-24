@@ -14,13 +14,12 @@ import React from 'react';
 import {Text, StyleSheet, ImageBackground} from 'react-native';
 import Colors from '../../../../node_modules/react-native/Libraries/NewAppScreen/components/Colors';
 
-const BackgroundImage = (props) => (
+const BackgroundImage = props => (
   <ImageBackground
     accessibilityRole={'image'}
     source={require('../../../../assets/images/boardgames.jpeg')}
     style={styles.background}
-    imageStyle={styles.logo}>
-  </ImageBackground>
+    imageStyle={styles.logo}></ImageBackground>
 );
 
 const styles = StyleSheet.create({
@@ -47,7 +46,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: '600',
     textAlign: 'center',
-    color: "black",
+    color: 'black',
   },
 });
 
