@@ -7,7 +7,7 @@ class Login extends Component {
   state = {firstName: '', lastName: '', email: '', password: ''};
 
   signup = () => {
-    Alert.alert('Signed In!');;
+    Alert.alert('Signed In!');
   };
 
   render() {

@@ -1,9 +1,20 @@
 import React, {Component} from 'react';
 import {View, Text} from 'react-native';
 import NearbyTable from './NearbyTable';
-import {ScrollView} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 export default class Explore extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+    };
+  }
+
+  navigateToTable = table_id => {
+    this.props.navigation.navigate('Table'), {table_id: table_id};
+  };
+
   render() {
     return (
       <ScrollView>
@@ -14,6 +25,8 @@ export default class Explore extends Component {
             distance="600m"
             start="6pm"
             {...this.props}
+            onPress={() => {
+              this.navigateToTable(this.state.data)}}
           />
 
           <NearbyTable
@@ -21,6 +34,9 @@ export default class Explore extends Component {
             host="Wayne"
             distance="940m"
             start="7pm"
+            {...this.props}
+            onPress={() => {
+                this.navigateToTable(this.state.data)}}
           />
 
           <NearbyTable
@@ -28,12 +44,18 @@ export default class Explore extends Component {
             host="Lucas"
             distance="1.3km"
             start="7:30pm"
+            {...this.props}
+            onPress={() => {
+                this.navigateToTable(this.state.data)}}
           />
           <NearbyTable
             games="Settlers of Catan, Monopoly, Scrabble"
             host="Fred"
             distance="600m"
             start="6pm"
+            {...this.props}
+            onPress={() => {
+                this.navigateToTable(this.state.data)}}
           />
 
           <NearbyTable
@@ -41,6 +63,9 @@ export default class Explore extends Component {
             host="Wayne"
             distance="940m"
             start="7pm"
+            {...this.props}
+            onPress={() => {
+                this.navigateToTable(this.state.data)}}
           />
 
           <NearbyTable
@@ -48,12 +73,18 @@ export default class Explore extends Component {
             host="Lucas"
             distance="1.3km"
             start="7:30pm"
+            {...this.props}
+            onPress={() => {
+                this.navigateToTable(this.state.data)}}
           />
           <NearbyTable
             games="Settlers of Catan, Monopoly, Scrabble"
             host="Fred"
             distance="600m"
             start="6pm"
+            {...this.props}
+            onPress={() => {
+                this.navigateToTable(this.state.data)}}
           />
 
           <NearbyTable
@@ -61,6 +92,9 @@ export default class Explore extends Component {
             host="Wayne"
             distance="940m"
             start="7pm"
+            {...this.props}
+            onPress={() => {
+                this.navigateToTable(this.state.data)}}
           />
 
           <NearbyTable
@@ -68,12 +102,18 @@ export default class Explore extends Component {
             host="Lucas"
             distance="1.3km"
             start="7:30pm"
+            {...this.props}
+            onPress={() => {
+                this.navigateToTable(this.state.data)}}
           />
           <NearbyTable
             games="Settlers of Catan, Monopoly, Scrabble"
             host="Fred"
             distance="600m"
             start="6pm"
+            {...this.props}
+            onPress={() => {
+                this.navigateToTable(this.state.data)}}
           />
 
           <NearbyTable

@@ -5,7 +5,6 @@ import Login from './components/pages/login/Login.js';
 import Explore from './components/pages/explore/Explore.js';
 import Table from './components/pages/table/Table.js';
 
-
 const BottomAppNavigator = createMaterialTopTabNavigator(
     {
       Home: {
@@ -40,7 +39,7 @@ const BottomAppNavigator = createMaterialTopTabNavigator(
       }
     },
     {
-      initialRouteName: "Home",
+      initialRouteName: "Explore",
       tabBarPosition: 'bottom',
       tabBarOptions: {
         style: {
