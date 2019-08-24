@@ -1,5 +1,28 @@
 import User from '../models/user.mjs'
 
+const handleError = (error) => {
+  let message = 'Unknown error'
+  if (error.errors.firstName) {
+    message = 'First Name is required'
+  } else if (error.errors.lastName) {
+    message = 'Last Name is required'
+  } else if (error.errors.username) {
+    if (error.errors.username.kind === 'required') {
+      message = 'Username is required'
+    } else if (error.errors.username.kind === 'unique') {
+      message = 'Username is already taken'
+    }
+  } else if (error.errors.email) {
+    if (error.errors.email.kind === 'required') {
+      message = 'Email is required'
+    } else if (error.errors.email.kind === 'unique') {
+      message = 'Email is already being used'
+    }
+  }
+
+  return { message: message }
+}
+
 const findAll = (req, res) => {
   res.status(405)
 }
@@ -26,8 +49,7 @@ const create = (req, res) => {
     ...req.body
   }).save((error, user) => {
     if (error || !user) {
-      console.log(error)
-      res.status(500).send(error)
+      res.status(400).send(handleError(error))
     } else {
       res.send({
         message: 'User created successfully',
@@ -43,8 +65,7 @@ const update = (req, res) => {
     username: req.params.username
   }, (error, user) => {
     if (error) {
-      console.log(error)
-      res.status(500).send(error)
+      res.status(400).send(handleError(error))
     } else if (user) {
       Object.keys(req.body).forEach( key => {
         if (req.body) {
@@ -53,14 +74,13 @@ const update = (req, res) => {
       })
       user.save((error, user) => {
         if (error || !user) {
-          console.log(error)
-          res.status(500).send(error)
-          return
+          res.status(400).send(handleError(error))
+        } else{
+          res.send({
+            message: 'User updated successfully',
+            user: user
+          })
         }
-        res.send({
-          message: 'User updated successfully',
-          user: user
-        })
       })
     } else {
       res.status(404).send({ message: 'User not found' })
