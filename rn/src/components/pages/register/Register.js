@@ -54,11 +54,6 @@ class Register extends Component {
             <View style={{ height:50 }}>
                 <Button  text='Sign Up' onPress={() => this.signup()} />
             </View>
-            
-            {/* <View style={{ height:50 }}>
-                <Button text='Go Back' onPress={() => { this.props.navigation.navigate('Home')}} />
-            </View> */}
-        
         </View>
   );
 };

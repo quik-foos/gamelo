@@ -15,84 +15,33 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import BackgroundImage from './BackgroundImage';
+import Logo from './Logo';
 import Header from '../../Header';
 import Button from '../../ui_elems/Button';
 
 
 class Home extends Component {
-
-    register = () => {
-      Alert.alert('Registered!')
-    }
-  
-    login = () => {
-      Alert.alert('Logged In')
-    }
-  
-    render() {
-        return (
-        <Fragment>
-            <StatusBar barStyle="dark-content" />
-            <SafeAreaView>
-            <ScrollView
-                contentInsetAdjustmentBehavior="automatic"
-                style={styles.scrollView}>
-                <Header title="Gamelo" />
-                <BackgroundImage />
-                <View style={styles.body}>
-                <Text></Text>
-                <Text></Text>
-                <Text></Text>
-                <Text></Text>
-                <Button text='Register' onPress={() => this.props.navigation.navigate('Register')} />
-                <Text></Text>
-                <Text></Text>
-                <Button text='Log In' onPress={() => this.props.navigation.navigate('Login')} />
-                </View>
-            </ScrollView>
-            </SafeAreaView>
-        </Fragment>
-        );
-    }
+  render() {
+    return <View style={styles.mainView}>
+      <Logo />
+      <View style={styles.spacer}/>
+      <Button text="Register" onPress={() => {this.props.navigation.navigate('Register')}}/>
+      <Button text="Log in" onPress={() => {this.props.navigation.navigate('Login')}}/>
+    </View>;
+  }
 }
 
 export default Home;
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  mainView: {
+    flex: 1,
+    backgroundColor: "#0BB",
+    justifyContent: "center",
+    alignItems: "stretch",
+    padding: 20
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+  spacer: {
+    height: 60
+  }
+})

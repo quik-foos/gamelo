@@ -15,22 +15,17 @@ const Button = ({ onPress, text }) => {
 
 const styles = {
     buttonStyle: {
-        flex: 1,
-        alignSelf: 'stretch',
-        backgroundColor: '#fff',
+        backgroundColor: '#066',
         borderRadius: 5,
-        borderWidth: 1,
-        borderColor: '#007aff',
-        marginLeft: 5,
-        marginRight: 5
+        margin: 10,
+        padding: 20
     },
     textStyle: {
         alignSelf: 'center',
-        fontSize: 16,
+        fontSize: 20,
+        fontFamily: 'Rubik-Bold',
         fontWeight: '600',
-        color: '#007aff',
-        paddingTop: 10,
-        paddingBottom: 10
+        color: '#fff'
     }
 };
 
