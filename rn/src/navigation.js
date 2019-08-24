@@ -2,6 +2,7 @@ import { createStackNavigator, createAppContainer } from "react-navigation";
 import Home from './components/pages/home/Home.js';
 import Register from './components/pages/register/Register.js';
 import Login from './components/pages/login/Login.js';
+import Explore from './components/pages/explore/Explore.js';
 
 const AppNavigator = createStackNavigator(
     {
@@ -21,6 +22,12 @@ const AppNavigator = createStackNavigator(
         screen: Login,
         navigationOptions: {
           title: "Login"
+        }
+      },
+      Explore: {
+        screen: Explore,
+        navigationOptions: {
+          title: "Explore"
         }
       }
     },
