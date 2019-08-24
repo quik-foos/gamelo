@@ -59,7 +59,7 @@ class Profile extends Component {
 
   render() {
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <View style={styles.header}></View>
             <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
             <View style={styles.body}>
@@ -68,13 +68,10 @@ class Profile extends Component {
                 <Text style={styles.info}>{this.state.username}</Text>
                 {/* <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text> */}
                 <ButtonSmall text="Sign Out" onPress={this.signout} /> 
-                <Text>
-                </Text>
-                <Text>
-                </Text>
               </View>
           </View>
-        </View>
+          <Explore />
+        </ScrollView>
 
     );
   }
@@ -129,7 +126,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: "5d619ec100ce9e044f1ba179"
   }
 }
 
