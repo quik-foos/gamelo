@@ -5,9 +5,7 @@ const findAll = (req, res) => {
 }
 
 const findOne = (req, res) => {
-  User.findOne({
-    username: req.params.username
-  }, (error, user) => {
+  User.findById(req.params.user_id, (error, user) => {
     if (error) {
       console.log(error)
       res.status(403).send(error)

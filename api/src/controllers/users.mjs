@@ -29,9 +29,8 @@ const findAll = (req, res) => {
 
 // Get user
 const findOne = (req, res) => {
-  User.findOne({
-    username: req.params.username
-  }, (error, user) => {
+  console.log(req.params)
+  User.findById(req.params.user_id, (error, user) => {
     if (error) {
       console.log(error)
       res.status(403).send(error)
@@ -61,9 +60,7 @@ const create = (req, res) => {
 
 // Update a user
 const update = (req, res) => {
-  User.findOne({
-    username: req.params.username
-  }, (error, user) => {
+  User.findById(req.params.user_id, (error, user) => {
     if (error) {
       res.status(400).send(handleError(error))
     } else if (user) {
@@ -91,7 +88,7 @@ const update = (req, res) => {
 // Delete a user
 const destroy = (req, res) => {
   User.remove({
-    username: req.params.username
+    username: req.params.user_id
   }, error => {
     if (error) {
       res.status(404).send({ message: 'User not found'})
@@ -125,7 +122,10 @@ const login = passport => {
             message: 'Incorrect username or password'
           })
         }
-        return res.send({ success: true })
+        return res.send({
+          success: true,
+          user: user
+        })
       })
     })(req, res, next)
   }

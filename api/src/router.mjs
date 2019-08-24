@@ -16,11 +16,11 @@ export default (express, passport) => {
   }
 
   return express.Router()
-    .use('/users', getCrudMethods(UsersController, 'username'))
+    .use('/users', getCrudMethods(UsersController, 'user_id'))
     .use('/games', getCrudMethods(GamesController, 'game_id'))
     .use('/tables', getCrudMethods(TablesController, 'table_id'))
     .use('/results', getCrudMethods(ResultsController, 'result_id'))
     .post('/login', UsersController.login(passport))
     .post('/logout', UsersController.logout)
-    .get('/users/:username/profile', ProfilesController.findOne)
+    .get('/users/:user_id/profile', ProfilesController.findOne)
 }

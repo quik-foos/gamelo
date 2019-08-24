@@ -7,6 +7,7 @@ import mongoose from 'mongoose'
 import passport from 'passport'
 import initPassport from './passport/init.mjs'
 import router from './router.mjs'
+import seed from './seed/index.mjs'
 
 // DB Setup
 mongoose.connect(`mongodb://${process.env.DATABASE_URL}`)
@@ -48,6 +49,7 @@ app.use(cors(corsOptions))
 app.options('*', cors())
 
 app.use('/api', router(express, passport))
+app.post('/seed', seed)
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on ${process.env.API_URL}`)

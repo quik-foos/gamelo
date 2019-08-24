@@ -33,12 +33,13 @@ class Register extends Component {
         username: this.state.username,
         password: this.state.password,
       });
-      UserApi.login({
+      let res = await UserApi.login({
         username: this.state.username,
         password: this.state.password,
       });
+      let user = await res.data.user._id
       await this.setState({loading: false});
-      await this.props.dispatch(loginAction(this.state.username));
+      await this.props.dispatch(loginAction(user));
     } catch (e) {
       await this.setState({loading: false});
       ToastAndroid.show(e.response.data.message, ToastAndroid.SHORT);
