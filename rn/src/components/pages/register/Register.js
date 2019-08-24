@@ -1,14 +1,46 @@
 import React, {Component} from 'react';
-import {Text, View, TextInput, Alert} from 'react-native';
+import {
+  ActivityIndicator,
+  Text,
+  View,
+  TextInput,
+  Alert,
+  ToastAndroid,
+} from 'react-native';
 import Input from '../../ui_elems/Input';
 import Button from '../../ui_elems/Button';
+import {UserApi} from '../../../api';
 
 class Register extends Component {
-  state = {firstName: '', lastName: '', email: '', username: '', password: ''};
-
-  signup = () => {
-    Alert.alert('Signed Up!');
+  state = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    username: '',
+    password: '',
+    loading: false,
   };
+
+  signup = async () => {
+    try {
+      await this.setState({loading: true});
+      const res = await UserApi.create({
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        email: this.state.email,
+        username: this.state.username,
+        password: this.state.password,
+      });
+      await this.setState({loading: false});
+    } catch (e) {
+      await this.setState({loading: false});
+      ToastAndroid.show(e.response.data.message, ToastAndroid.SHORT)
+    }
+  };
+
+  getLoader = () => {
+    if (this.state.loading) return <ActivityIndicator size="large" color="#00ff00" />
+  }
 
   render() {
     return (
@@ -50,8 +82,9 @@ class Register extends Component {
         />
         <Text></Text>
         <View style={{height: 50}}>
-          <Button text="Sign Up" onPress={() => this.signup()} />
+          <Button text="Sign Up" onPress={this.signup} />
         </View>
+        {this.getLoader()}
       </View>
     );
   }

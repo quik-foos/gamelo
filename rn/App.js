@@ -18,6 +18,10 @@ export default class App extends Component {
     GlobalFont.applyGlobal('Rubik-Medium');
   }
 
+  updateLogin(newLogin) {
+    this.setState({ loggedIn: newLogin })
+  }
+
   renderNavigator = () => {
     if(this.state.loggedIn){
       return <BottomAppContainer />
