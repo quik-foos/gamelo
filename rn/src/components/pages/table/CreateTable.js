@@ -8,6 +8,10 @@ import DateTimeInput from '../../ui_elems/DateTimeInput';
 import GamePicker from '../../ui_elems/GamePicker';
 import { TableApi } from '../../../api';
 import { connect } from 'react-redux';
+import RNGooglePlaces from 'react-native-google-places';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+
 const moment = require('moment');
 
 class CreateTable extends Component {
@@ -19,6 +23,18 @@ class CreateTable extends Component {
       maxPlayers: 4,
       games: []
     };
+  }
+
+  showLocationPicker = () => {
+    RNGooglePlaces.openAutocompleteModal()
+    .then((place) => {
+      this.setState({
+        location: { lat: place.location.latitude, lng: place.location.longitude }
+      })
+		// place represents user's selection from the
+		// suggestions and it is a simplified Google Place object.
+    })
+    .catch(error => console.log(error.message));  // error is a Javascript Error object
   }
 
   setLocation = location => {
@@ -105,6 +121,9 @@ class CreateTable extends Component {
     return <ScrollView>
       <View style={styles.container}>
         <Text style={styles.titleText}>Create a Table</Text>
+        <TouchableOpacity onPress={() => this.showLocationPicker()}>
+          <Text>Location</Text>
+        </TouchableOpacity>
         <Fumi
             label={'Location'}
             iconClass={Entypo}
