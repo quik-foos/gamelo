@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import { Fumi } from 'react-native-textinput-effects';
 import {
   Text, 
   View, 
@@ -6,7 +9,8 @@ import {
   Alert, 
   ToastAndroid,
   ActivityIndicator} from 'react-native';
-import Input from '../../ui_elems/Input';
+import { Input } from 'react-native-elements';
+// import Input from '../../ui_elems/Input';
 import Button from '../../ui_elems/Button';
 import {connect} from 'react-redux';
 import {UserApi, TableApi} from '../../../api';
@@ -50,20 +54,27 @@ class Login extends Component {
       <View>
         <Text>
         </Text>
-        <Input
-          label="Username"
-          placeholder="username"
-          value={this.state.username}
-          secureTextEntry={false}
-          onChangeText={username => this.setState({username})}
-        />
-        <Input
-          label="Password"
-          placeholder="password"
-          value={this.state.password}
-          secureTextEntry={true}
-          onChangeText={password => this.setState({password})}
-        />
+        <Fumi
+        label={'Username'}
+        iconClass={FontAwesomeIcon}
+        iconName={'user'}
+        iconColor={'#005756'}
+        iconSize={20}
+        iconWidth={40}
+        inputPadding={16}
+        onChangeText={username => this.setState({username})}
+      />
+      <Fumi
+        label={'Password'}
+        iconClass={FontAwesomeIcon}
+        iconName={'lock'}
+        iconColor={'#005756'}
+        iconSize={20}
+        iconWidth={40}
+        inputPadding={16}
+        secureTextEntry={true}
+        onChangeText={password => this.setState({password})}
+      />
         <Text />
         <View style={{height: 50}}>
           <Button text="Sign In" onPress={this.login} />

@@ -15,7 +15,6 @@ import { UserApi, ResultApi } from '../../../api';
 import { logoutAction } from '../../../actions';
 import ButtonSmall from '../../../components/ui_elems/ButtonSmall'
 import { ScrollView } from 'react-native-gesture-handler';
-import MaterialTabs from 'react-native-material-tabs';
 
 class Profile extends Component {
 
