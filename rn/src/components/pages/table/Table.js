@@ -30,18 +30,74 @@ class Table extends Component {
   }
 
   componentDidMount() {
-    this.updateData();
-    this.interval = setInterval(this.updateData, 3000);
+    this.getRelevantTable()
+    if (!this.state.id) {
+      this.updateData()
+    }
+    this.interval = setInterval(this.updateData, 10000);
   }
 
   updateData = () => {
-    this.fetchTable();
+    this.getRelevantTable();
     this.fetchResults();
+  }
+
+  getRelevantTable = async () => {
+    try {
+      let response = await TableApi.findAll({host: this.props.user});
+      let tables = await response.data;
+      let table = {}
+      console.log(tables)
+      if (tables.length > 0) {
+        table = tables[0]
+        await this.setState({
+          id: table._id,
+          status: table.status,
+          hostId: table.host._id,
+          hostName: table.host.firstName + " " + table.host.lastName,
+          players: table.players,
+          joinRequests: table.joinRequests
+        })
+        return
+      } 
+      response = await TableApi.findAll({players: this.props.user});
+      tables = await response.data;
+      console.log(tables)
+      if (tables.length > 0) {
+        table = tables[0]
+        await this.setState({
+          id: table._id,
+          status: table.status,
+          hostId: table.host._id,
+          hostName: table.host.firstName + " " + table.host.lastName,
+          players: table.players,
+          joinRequests: table.joinRequests
+        })
+        return
+      }
+      response = await TableApi.findAll({joinRequests: this.props.user});
+      tables = await response.data;
+      console.log(tables)
+      if (tables.length > 0) {
+        table = tables[0]
+        await this.setState({
+          id: table[0]._id,
+          status: table.status,
+          hostId: table.host._id,
+          hostName: table.host.firstName + " " + table.host.lastName,
+          players: table.players,
+          joinRequests: table.joinRequests
+        })
+        return
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   fetchTable = async () => {
     try {
-      const response = await TableApi.findOne({id: this.props.id});
+      const response = await TableApi.findOne({id: this.state.id});
       const table = await response.data;
       this.setState({
         status: table.status,
@@ -227,15 +283,15 @@ class Table extends Component {
     <Text>Current Players {this.state.players.length} / {this.state.max} </Text>
     {this.state.players.map((player, key) => {
       return <TouchableOpacity key={key} onPress={() => {this.navigateToProfile(player._id)}}>
-        <Text>
-          {player.username}
+        <View>
+          <Text>{player.username}</Text>
           {(this.props.user === this.state.hostId) &&
             <ButtonSmall
               text="Kick player"
               onPress={() => {this.kickPlayer(player._id)}}
             />
           }
-        </Text>
+        </View>
       </TouchableOpacity>;
     })}
   </Fragment>;
