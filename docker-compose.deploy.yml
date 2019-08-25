@@ -20,8 +20,6 @@ services:
     command:
       - ./node_modules/nodemon/bin/nodemon.js
       - "--experimental-modules"
-      - "--legacy-watch"
-      - "--inspect=0.0.0.0"
       - "./src/app.mjs"
 
   gamelo_nginx:
@@ -40,9 +38,9 @@ services:
     ports:
       - '27017:27017'
     volumes:
-      - db_volume:/data/db
+      - gamelo_db_volume:/data/db
     command: mongod --port 27017
 
 volumes:
-  db_volume:
+  gamelo_db_volume:
     external: true
