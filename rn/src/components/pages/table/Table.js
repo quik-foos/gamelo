@@ -185,6 +185,12 @@ class Table extends Component {
     });
   }
 
+  goToCreateResultView = () => {
+    this.setState({
+      view: "making-result"
+    });
+  }
+
   goToResultView = (resultId) => {
     this.setState({
       view: "viewing-result",
@@ -227,7 +233,7 @@ class Table extends Component {
       {this.state.status === "In-Progress" ||
         <Button
           text="Record game result"
-          onPress={this.createResult}
+          onPress={this.goToCreateResultView}
         />
       }
     </View>;
@@ -255,7 +261,7 @@ class Table extends Component {
       {this.state.status === "In-Progress" ||
         <Button
           text="Record game result"
-          onPress={this.createResult}
+          onPress={this.goToCreateResultView}
         />
       }
     </View>;

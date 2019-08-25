@@ -46,9 +46,9 @@ class MakeResult extends Component {
     });
   }
 
-  setGame = game => {
+  setGame = (gameId, itemIndex) => {
     this.setState({
-      game: game
+      game: gameId
     })
   }
 
@@ -90,7 +90,7 @@ class MakeResult extends Component {
 
   createResult = () => {
     ResultApi.create({
-      game: this.state.game._id,
+      game: this.state.game,
       players: this.state.players,
       winner: this.state.winners,
       validated: false,
@@ -106,6 +106,7 @@ class MakeResult extends Component {
     return <View>
       <Text>Which game did you play?</Text>
       <GamePicker
+        value={this.state.game}
         onSelectGame={this.setGame}
       />
       {this.state.game &&
