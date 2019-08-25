@@ -20,14 +20,14 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:20,
+    marginBottom:10,
     width:250,
     borderRadius:30,
     backgroundColor: BUTTON_COLOR,
   },
   bodyContent: {
     alignItems: 'center',
-    padding:30,
+    padding:10,
   },
   textStyle: {
     alignSelf: 'center',
