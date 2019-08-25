@@ -80,6 +80,8 @@ class Profile extends Component {
   }
 
   render() {
+    const {buttonContainer}=styles;
+
     const History = 
       (
       <View>
@@ -114,13 +116,13 @@ class Profile extends Component {
               <View style={styles.bodyContent}>
                 <Text style={styles.name}>{`${this.state.firstName} ${this.state.lastName}`}</Text>
                 <Text style={styles.info}>{this.state.username}</Text>
-                <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text>
-                <View>
+                <Text style={styles.description}>I love strategy board games! Always up for a round of Catan or quik fooz</Text>
+                <View style={buttonContainer}>
                   <ButtonSmall text="Game History" onPress={this.displayHistory}/> 
                   <ButtonSmall text="Game Summary" onPress={this.displaySummary}/> 
                 </View>
-                <ButtonSmall text="Sign Out" onPress={this.signout} /> 
                 { this.state.view === "history" ? History : EloSummary}
+                <ButtonSmall text="Sign Out" onPress={this.signout} /> 
               </View>
               </View>
         </ScrollView>
@@ -144,6 +146,9 @@ const styles = StyleSheet.create({
     alignSelf:'center',
     position: 'absolute',
     marginTop:130
+  },
+  buttonContainer: {
+    flexDirection: 'row',
   },
   name:{
     fontSize:22,

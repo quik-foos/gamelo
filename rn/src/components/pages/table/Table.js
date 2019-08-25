@@ -23,22 +23,26 @@ class Table extends Component {
   };
 
   render() {
+    const { buttonContainer, tableContainer} = styles;
     return (
-      <View>
-        <Text> Fred's Table{'\n'}</Text>
-        <Text>Current Players {this.state.players.length}/{this.state.max}{'\n'}</Text>
+      <View >
+        <View style={tableContainer}>
+          <Text> Fred's Table{'\n'}</Text>
+          <Text>Current Players {this.state.players.length}/{this.state.max}{'\n'}</Text>
 
-        {this.state.players.map((data, key) => {
-          return (
-            <TouchableOpacity key={key} onPress={this.navigateToProfile}>
-              <Text>
-                {data} {'\n'}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-
+          {this.state.players.map((data, key) => {
+            return (
+              <TouchableOpacity key={key} onPress={this.navigateToProfile}>
+                <Text>
+                  {data} {'\n'}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
         <ButtonSmall text="Request to Join" onPress={this.requestJoin} />
+       
+       
         <Text>
           Status: {this.state.status}
           {'\n\n'}
@@ -49,8 +53,10 @@ class Table extends Component {
           return (
             <View key={key}>
               <Text>{request}</Text>
-              <ButtonSmall text="Accept"/>
+              <View style ={buttonContainer}>
+              <ButtonSmall style={smol} text="Accept"/>
               <ButtonSmall text="Reject"/>
+              </View>
             </View>
           );
         })}
@@ -58,5 +64,12 @@ class Table extends Component {
     );
   }
 }
-
+const styles = {
+  tableContainer:{
+   margin:10
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+  },
+}
 export default Table;
