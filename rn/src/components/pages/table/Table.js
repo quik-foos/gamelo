@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {View, Text, Alert, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import CreateTable from './CreateTable';
 import MakeResult from './MakeResult';
 import Result from './Result';
@@ -137,8 +137,8 @@ class Table extends Component {
   }
 
   getNoneView = () => {
-    return <View>
-      <Text>You're not part of any table.</Text>
+    return <View style={styles.noTable}>
+      <Text style={styles.noTableText}>You're not part of any table.</Text>
       <Button
         text="Create a table"
         onPress={this.goToCreateView}
@@ -299,5 +299,21 @@ const mapStateToProps = state => ({
   user: state.user,
   id: state.table
 })
+
+const styles = StyleSheet.create({
+  noTable: {
+    borderColor: '#123456',
+    padding:15,
+    marginTop:180,
+    alignSelf: "center"
+  },
+  noTableText:{
+    fontSize:24,
+    paddingBottom:35
+  }
+
+});
+
+
 
 export default connect(mapStateToProps)(Table);

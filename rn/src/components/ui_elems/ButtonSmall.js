@@ -21,7 +21,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom:10,
-    width:250,
+    width:155,
     borderRadius:30,
     backgroundColor: BUTTON_COLOR,
   },

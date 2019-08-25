@@ -12,6 +12,6 @@ export default () => {
   //     user.save()
   //   })
   // })
-  seedGames()
+  // seedGames()
   seedTables()
 }

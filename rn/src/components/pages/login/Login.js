@@ -51,27 +51,27 @@ class Login extends Component {
       <View>
         <Text>
         </Text>
-        <Fumi
-        label={'Username'}
-        iconClass={FontAwesomeIcon}
-        iconName={'user'}
-        iconColor={'#005756'}
-        iconSize={20}
-        iconWidth={40}
-        inputPadding={16}
-        onChangeText={username => this.setState({username})}
-      />
-      <Fumi
-        label={'Password'}
-        iconClass={FontAwesomeIcon}
-        iconName={'lock'}
-        iconColor={'#005756'}
-        iconSize={20}
-        iconWidth={40}
-        inputPadding={16}
-        secureTextEntry={true}
-        onChangeText={password => this.setState({password})}
-      />
+          <Fumi
+            label={'Username'}
+            iconClass={FontAwesomeIcon}
+            iconName={'user'}
+            iconColor={'#005756'}
+            iconSize={20}
+            iconWidth={40}
+            inputPadding={16}
+            onChangeText={username => this.setState({username})}
+          />
+          <Fumi
+            label={'Password'}
+            iconClass={FontAwesomeIcon}
+            iconName={'lock'}
+            iconColor={'#005756'}
+            iconSize={20}
+            iconWidth={40}
+            inputPadding={16}
+            secureTextEntry={true}
+            onChangeText={password => this.setState({password})}
+          />
         <Text />
         <View style={{height: 50}}>
           <Button text="Sign In" onPress={this.login} />
