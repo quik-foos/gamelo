@@ -24,10 +24,10 @@ class MakeResult extends Component {
 
   fetchTable = async () => {
     try {
-      const response = await TableApi.findOne({id: this.props.tableId});
+      const response = await TableApi.findOne(this.props.tableId);
       const data = await response.data;
       this.setState({
-        tablePlayers: data.players
+        tablePlayers: data.users
       })
     } catch {
 
@@ -121,7 +121,7 @@ class MakeResult extends Component {
   getStage1 = () => {
     return <View>
       <Text>Who played?</Text>
-      {this.getPlayerChecklist}
+      {this.getPlayerChecklist()}
       {this.state.players.length > 1 &&
         <Button
           text="Continue"
@@ -134,7 +134,7 @@ class MakeResult extends Component {
   getStage2 = () => {
     return <View>
       <Text>Who won?</Text>
-      {this.getWinnerChecklist}
+      {this.getWinnerChecklist()}
       {(this.state.winners.length > 1 && this.state.winners.length < this.state.players.length) &&
         <Button
           text="Submit"
