@@ -158,7 +158,7 @@ const addPlayer = (req, res) => {
           console.log(error)
           res.status(404).send({ message: 'User not found' })
         } else {
-          table.users = [...table.users, user._id]
+          table.players = [...table.players, user._id]
           table.save((error, table) => {
             if (error || !table) {
               res.status(400).send({ message: 'Table could not be saved' })
@@ -183,7 +183,7 @@ const removePlayer = (req, res) => {
       console.log(error)
       res.status(403).send(error)
     } else if (table) {
-      table.users = table.users.filter(x =>  x._id != req.params.user_id)
+      table.players = table.players.filter(x =>  x._id != req.params.user_id)
       table.save((error, table) => {
         if (error || !table) {
           res.status(400).send({ message: 'User not found' })
