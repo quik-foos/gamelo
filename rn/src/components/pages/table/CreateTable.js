@@ -4,10 +4,10 @@ import Input from '../../ui_elems/Input';
 import Button from '../../ui_elems/Button';
 import DateTimeInput from '../../ui_elems/DateTimeInput';
 import GamePicker from '../../ui_elems/GamePicker';
-
+import { TableApi } from '../../../api';
 const moment = require('moment');
 
-export default class CreateTable extends Component {
+class CreateTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +38,7 @@ export default class CreateTable extends Component {
 
   addGame = game => {
     this.setState(prevState => {
-      if (prevState.games.includes(game)) {
+      if (prevState.games.map(game => game._id).includes(game._id)) {
         return;
       } else {
         return {
@@ -50,9 +50,9 @@ export default class CreateTable extends Component {
 
   removeGame = game => {
     this.setState(prevState => {
-      if (prevState.games.includes(game)) {
+      if (prevState.games.map(game => game._id).includes(game._id)) {
         let gamesOut = prevState.games.slice(0);
-        gamesOut.splice(gamesOut.indexOf(game), 1);
+        gamesOut.splice(gamesOut.map(game => game._id).indexOf(game._id), 1);
         return {
           games: gamesOut
         }
@@ -62,11 +62,23 @@ export default class CreateTable extends Component {
     })
   }
 
+  getLatLong = (address) => {
+    return {lat: 0.1, lng: 0.1};
+  }
+
   createTable = () => {
     try {
-      // create Table
+      TableApi.create({
+        host: this.props.user,
+        games: this.state.games.map(game => game._id),
+        players: [],
+        joinRequests: [],
+        startTime: moment(this.state.dateTime).toDate(),
+        maxPlayers: this.state.maxPlayers,
+        location: getLatLong(),
+        status: "Scheduled"
+      });
     } catch {
-
     }
   }
 
@@ -77,7 +89,7 @@ export default class CreateTable extends Component {
   getGames = () => {
     this.state.games.map(game =>
       <View>
-        <Text>{game}</Text>
+        <Text>{game.name}</Text>
         <Button
           text="remove"
           onPress={this.removeGame(game)}
@@ -130,3 +142,9 @@ export default class CreateTable extends Component {
     </ScrollView>;
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps)(CreateTable);

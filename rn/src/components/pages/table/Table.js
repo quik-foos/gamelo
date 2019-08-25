@@ -3,11 +3,10 @@ import {View, Text, Alert, TouchableOpacity} from 'react-native';
 import CreateTable from './CreateTable';
 import MakeResult from './MakeResult';
 import Result from './Result';
-import Input from '../../ui_elems/Input';
 import Button from '../../ui_elems/Button';
 import ButtonSmall from '../../ui_elems/ButtonSmall';
 import { connect } from 'react-redux';
-import { TableApi } from '../../../api';
+import { TableApi, ResultApi } from '../../../api';
 
 class Table extends Component {
   constructor(props) {
@@ -30,29 +29,19 @@ class Table extends Component {
   }
 
   componentDidMount() {
-    this.fetchPlayers();
-    this.fetchJoinRequests();
+    this.fetchTable();
     this.fetchResults();
   }
 
-  fetchPlayers = async () => {
+  fetchTable = async () => {
     try {
-      const response = await TableApi.findOne(this.props.id);
+      const response = await TableApi.findOne({id: this.props.id});
       const table = await response.data;
       this.setState({
-        players: table.players
-      });
-    } catch {
-    }
-  }
-
-  fetchJoinRequests = async () => {
-    try {
-      const response = await JoinRequestApi.findAll();
-      const joinRequests = await response.data;
-      joinRequests = joinRequests.filter(datum => {datum.table._id === this.props.id});
-      this.setState({
-        joinRequests: joinRequests
+        hostId: table.host._id,
+        hostName: table.host.firstName + " " + table.host.lastName,
+        players: table.players,
+        joinRequests: table.joinRequests
       });
     } catch {
     }
@@ -60,28 +49,53 @@ class Table extends Component {
 
   fetchResults = async () => {
     try {
+      const response = await ResultApi.findAll({table: this.props.id});
+      const results = await response.data;
+      this.setState({
+        results: results
+      })
     } catch {
     }
   }
 
   kickPlayer = (playerId) => {
-
+    try {
+      TableApi.removePlayer({userId: playerId});
+    } catch {
+    }
   }
 
   acceptJoinRequest = (joinRequestId) => {
+    try {
+      TableApi.removeJoinRequest({userId: joinRequestId});
+      TableApi.addPlayer({userId: joinRequestId});
+    } catch {
 
+    }
   }
 
   rejectJoinRequest = (joinRequestId) => {
+    try {
+      TableApi.removeJoinRequest({userId: joinRequestId});
+    } catch {
 
+    }
   }
 
   startPlaying = () => {
+    try {
+      TableApi.update(this.props.id, {status: "In-Progress"});
+    } catch {
 
+    }
   }
 
   endSession = () => {
+    try {
+      TableApi.update(this.props.id, {status: "Completed"});
+    } catch {
 
+    }
   }
 
   navigateToProfile = (profile_id) => {
@@ -211,7 +225,7 @@ class Table extends Component {
     <Text>Join Requests</Text>
     {this.state.joinRequests.map((joinRequest, id) => {
       return <View key={id}>
-        {joinRequest.player.username}
+        {joinRequest.username}
         <ButtonSmall
           text="Accept"
           onPress={() => {this.acceptJoinRequest(joinRequest._id)}}
@@ -229,7 +243,7 @@ class Table extends Component {
     {this.state.results.map((result, id) => {
       return <TouchableOpacity key={id} onPress={() => {this.goToResultView(result._id)}}>
         <Text>
-          {result.name}
+          {result.game.name}
         </Text>
       </TouchableOpacity>;
     })}

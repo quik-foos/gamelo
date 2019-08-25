@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {View, Text} from 'react-native';
 import Button from '../../ui_elems/Button';
+import { connect } from 'react-redux';
+import { ResultApi } from '../../../api';
 
 class Result extends Component {
   constructor(props) {
@@ -14,22 +16,25 @@ class Result extends Component {
     this.fetchData();
   }
 
-  fetchData = () => {
+  fetchData = async () => {
     try {
-      // fetchData
+      const response = await ResultApi.findOne({id: this.props.id});
+      const data = await response.data;
+      this.setState({
+        result: data
+      })
     } catch {
 
     }
   }
 
   acceptResult = () => {
-
+    try {
+      ResultApi.addValidatedPlayer({validatedPlayerId: this.props.user});
+    } catch {
+    }
   }
-
-  rejectResult = () => {
-
-  }
-
+  
   getPlayers = () => {
     return <View>
       {this.state.result.players.map(player => <View>
@@ -56,10 +61,6 @@ class Result extends Component {
       <Button
         text="Accept"
         onPress={this.acceptResult}
-      />
-      <Button
-        text="Reject"
-        onPress={this.rejectResult}
       />
     </View>
   }

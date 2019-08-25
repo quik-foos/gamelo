@@ -3,13 +3,15 @@ import {View, Text} from 'react-native';
 import GamePicker from '../../ui_elems/GamePicker';
 import Button from '../../ui_elems/Button';
 import Checky from '../../ui_elems/Checky';
+import { connect } from 'react-redux';
+import { TableApi, ResultApi } from '../../../api';
 
-export default class MakeResult extends Component {
+class MakeResult extends Component {
 	constructor(props) {
     super(props);
     this.state = {
       stage: 0, // 0: which game? 1: who played? 2: who won?
-      game: "",
+      game: null,
       tablePlayers: [],
       players: [],
       winners: []
@@ -17,11 +19,19 @@ export default class MakeResult extends Component {
   }
 
   componentDidMount() {
-    this.fetchTablePlayers();
+    this.fetchTable();
   }
 
-  fetchTablePlayers = () => {
+  fetchTable = async () => {
+    try {
+      const response = await TableApi.findOne({id: this.props.tableId});
+      const data = await response.data;
+      this.setState({
+        tablePlayers: data.players
+      })
+    } catch {
 
+    }
   }
 
   goToStage1 = () => {
@@ -75,7 +85,13 @@ export default class MakeResult extends Component {
   }
 
   createResult = () => {
-
+    ResultApi.create({
+      game: this.state.game._id,
+      players: this.state.players,
+      winner: this.state.winners,
+      validated: false,
+      validatedPlayers: [this.props.user]
+    });
   }
 
   cancelResult = () => {
@@ -126,7 +142,7 @@ export default class MakeResult extends Component {
   getPlayerChecklist = () => {
     let checklist = [];
     this.state.tablePlayers.forEach(player => {
-      let gameElo = player.elos.find(elo => elo.game.name === this.state.name);
+      let gameElo = player.elos.find(elo => elo.game._id === this.state.game._id);
       return <View key={player._id}>
         <Checky
           value={this.state.players.includes(player._id)}
@@ -146,14 +162,14 @@ export default class MakeResult extends Component {
   getWinnerChecklist = () => {
     let checklist = [];
     this.state.players.forEach(player => {
-      let gameElo = this.state.tablePlayers.elos.find(elo => elo.game.name === this.state.name);
-      return <View key={player.id}>
+      let gameElo = this.state.tablePlayers.elos.find(elo => elo.game._id === this.state.game._id);
+      return <View key={player}>
         <Checky
-          value={this.state.players.includes(player.id)}
-          onClick={this.togglePlayer(player.id)}
+          value={this.state.players.includes(player)}
+          onClick={this.togglePlayer(player)}
         />
         <Text>
-          {this.state.tablePlayers.username}
+          {this.state.tablePlayers.find(p => p === player).username}
           {gameElo ? gameElo.rating : 1500}
         </Text>
       </View>
@@ -176,3 +192,9 @@ export default class MakeResult extends Component {
     }
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps)(MakeResult);

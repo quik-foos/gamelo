@@ -19,9 +19,10 @@ export default class GamePicker extends Component {
 
   fetchData = async () => {
     try {
-      const data = await GameApi.findAll();
+      const response = await GameApi.findAll();
+      const data = await response.data;
       this.setState({
-        data: data.data.map(datum => datum.name)
+        data: data.data
       });
     } catch {
     }
@@ -32,18 +33,17 @@ export default class GamePicker extends Component {
       return [];
     }
     return (this.state.data.filter(datum => {
-      return datum.toLowerCase().replace(/\s/g, '')
+      return datum.name.toLowerCase().replace(/\s/g, '')
         .startsWith(this.state.query.toLowerCase().replace(/\s/g, ''));
     }));
   }
 
   renderItem = (item, i) => (
     <TouchableOpacity key={i} onPress={() => {
-      console.log("selected", item)
       this.props.onSelectGame(item);
-      this.setState({query: item});
+      this.setState({query: item.name});
       }}>
-      <Text>{item}</Text>
+      <Text>{item.name}</Text>
     </TouchableOpacity>
   );
 
@@ -66,7 +66,7 @@ export default class GamePicker extends Component {
         </Text>
         <View>
           <TextInput
-            value={this.state.enteringQuery ? this.state.query : this.props.value}
+            value={this.state.enteringQuery ? this.state.query : this.props.value.name}
             autoCorrect={false}
             onChangeText={text => {this.setState({query: text});}}
             onFocus={() => {this.setState({
