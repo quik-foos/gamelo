@@ -20,8 +20,9 @@ export default class NearbyTable extends Component {
           <CardSection>
             <View style={styles.headerContentStyle}>
               <Text style={[styles.albumTitle, styles.headerTextStyle]}>
-                {this.props.host} {'\n'}
-                {this.props.distance} {this.props.start} {'\n'}
+                Host: {this.props.host} {'\n'}
+                Distance in Km: {this.props.distance} {'\n'}
+                Start Time: {this.props.start.split('T')[0]} at {this.props.start.split('T')[1].split('.000')[0]} {'\n'}
                 Games: {this.props.games}
                 {'\n\n'}
               </Text>
