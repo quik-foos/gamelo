@@ -9,7 +9,7 @@ import {
 import Input from '../../ui_elems/Input';
 import Button from '../../ui_elems/Button';
 import {connect} from 'react-redux';
-import {UserApi} from '../../../api';
+import {UserApi, TableApi} from '../../../api';
 import {loginAction} from '../../../actions';
 import { BUTTON_COLOR } from '../../../constants';
 
@@ -18,6 +18,9 @@ class Login extends Component {
   state = {username: '', password: '', loading: false};
 
   login = async () => {
+    let res = await TableApi.findAll({ host: "5d618db4ec27cd02bd95d261" })
+    let tables = await res.data
+    console.log(tables)
     try {
       await this.setState({loading: true});
       let res = await UserApi.login({

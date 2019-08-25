@@ -27,4 +27,12 @@ export default (express, passport) => {
     .delete('/users/:user_id/games/:game_id', UsersController.removeGame)
     .delete('/users/:user_id/results/:result_id', UsersController.removeResult)
     .delete('/users/:user_id/elo/:elo_id', UsersController.removeElo)
+    .post('/tables/:table_id/games/:game_id', TablesController.addGame)
+    .post('/tables/:table_id/players/:user_id', TablesController.addPlayer)
+    .post('/tables/:table_id/join_requests/:user_id', TablesController.addJoinRequest)
+    .delete('/tables/:table_id/games/:game_id', TablesController.removeGame)
+    .delete('/tables/:table_id/players/:user_id', TablesController.removePlayer)
+    .delete('/tables/:table_id/join_requests/:user_id', TablesController.removeJoinRequest)
+    .post('/results/:result_id/validations/:user_id', TablesController.addPlayer)
+    .delete('/results/:result_id/validations/:user_id', TablesController.addPlayer)
 }

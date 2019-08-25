@@ -11,9 +11,6 @@ const Schema = new Schema({
     email: { type: String, required: true, unique: true },
     passwordHash: { type: String, required: true, select: false },
     createdAt: { type: Date, required: true },
-    profile: { type: Schema.ObjectId, ref: 'Profile' }
-  },
-  profile: {
     games: [{ type: Schema.ObjectId, ref: 'Game' }],
     elos: [{ type: Schema.ObjectId, ref: 'Elo' }],
     history: [{ type: Schema.ObjectId, ref: 'GameResult' }]

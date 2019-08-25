@@ -12,21 +12,25 @@ export default {
     return server.post('logout', params);
   },
   addGame(params) {
-    return server.post('/users/:user_id/games/:game_id', params);
+    return server.post(`/users/${params.id}/games/${params.gameId}`, {params});
   },
   addResult(params) {
-    return server.post('/users/:user_id/results/:result_id', params);
+    return server.post(`/users/${params.id}/results/${params.resultId}`, {
+      params,
+    });
   },
   addElo(params) {
-    return server.post('/users/:user_id/elo/:elo_id', params);
+    return server.post(`/users/${params.id}/elo/${params.eloId}`, {params});
   },
   removeGame(params) {
-    return server.post('/users/:user_id/games/:game_id', params);
+    return server.delete(`/users/${params.id}/games/${params.gameId}`, {params});
   },
   removeResult(params) {
-    return server.post('/users/:user_id/results/:game_id', params);
+    return server.delete(`/users/${params.id}/results/${params.resultId}`, {
+      params,
+    });
   },
   removeElo(params) {
-    return server.post('/users/:user_id/elo/:elo_id', params);
+    return server.delete(`/users/${params.id}/elo/${params.eloId}`, {params});
   },
 };

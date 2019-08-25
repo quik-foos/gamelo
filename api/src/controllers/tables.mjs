@@ -1,13 +1,24 @@
 import Table from '../models/table.mjs'
+import Game from '../models/user.mjs'
+import User from '../models/game.mjs'
 
 const findAll = (req, res) => {
-  Table.find({}, (error, tables) => {
+  let query = {}
+  if (req.query.host) query.host = req.query.host
+  if (req.query.player) {
+    query.player = { _id: req.query.player }
+  }
+  if (req.query.joinRequest) {
+    query.joinRequest = { _id: req.query.joinRequest }
+  }
+
+  Table.find(query, (error, tables) => {
     if (error) {
       console.log(error)
       res.status(500).send(error)
     } else {
       res.send(tables)
-    } 
+    }
   }).sort({ _id: -1 })
 }
 
@@ -81,10 +92,175 @@ const destroy = (req, res) => {
   })
 }
 
+const addGame = (req, res) => {
+  Table.findById(req.params.table_id, (error, table) => {
+    if (error) {
+      console.log(error)
+      res.status(403).send(error)
+    } else if (table) {
+      Game.findById(req.params.game_id, (error, game) => {
+        if (error || !game) {
+          console.log(error)
+          res.status(404).send({ message: 'Game not found' })
+        } else {
+          table.games = [...table.games, game._id]
+          table.save((error, table) => {
+            if (error || !table) {
+              res.status(400).send({ message: 'Table could not be saved' })
+            } else{
+              res.send({
+                message: 'Game added successfully',
+                table: table
+              })
+            }
+          })
+        }
+      })
+    } else {
+      res.status(404).send({ error: 'Table not found' })
+    }
+  })
+}
+
+const removeGame = (req, res) => {
+  Table.findById(req.params.table_id, (error, table) => {
+    if (error) {
+      console.log(error)
+      res.status(403).send(error)
+    } else if (table) {
+      table.games = table.games.filter(x =>  x._id !== req.params.game_id)
+      table.save((error, table) => {
+        if (error || !table) {
+          res.status(400).send({ message: 'User not found' })
+        } else{
+          res.send({
+            message: 'Game removed successfully',
+            table: table
+          })
+        }
+      })
+    } else {
+      res.status(404).send({ error: 'Table not found' })
+    }
+  })
+}
+
+const addPlayer = (req, res) => {
+  Table.findById(req.params.table_id, (error, table) => {
+    if (error) {
+      console.log(error)
+      res.status(403).send(error)
+    } else if (table) {
+      User.findById(req.params.user_id, (error, user) => {
+        if (error || !user) {
+          console.log(error)
+          res.status(404).send({ message: 'User not found' })
+        } else {
+          table.users = [...table.users, user._id]
+          table.save((error, table) => {
+            if (error || !table) {
+              res.status(400).send({ message: 'Table could not be saved' })
+            } else{
+              res.send({
+                message: 'User added successfully',
+                table: table
+              })
+            }
+          })
+        }
+      })
+    } else {
+      res.status(404).send({ error: 'Table not found' })
+    }
+  })
+}
+
+const removePlayer = (req, res) => {
+  Table.findById(req.params.table_id, (error, table) => {
+    if (error) {
+      console.log(error)
+      res.status(403).send(error)
+    } else if (table) {
+      table.users = table.users.filter(x =>  x._id !== req.params.user_id)
+      table.save((error, table) => {
+        if (error || !table) {
+          res.status(400).send({ message: 'User not found' })
+        } else{
+          res.send({
+            message: 'User removed successfully',
+            table: table
+          })
+        }
+      })
+    } else {
+      res.status(404).send({ error: 'Table not found' })
+    }
+  })
+}
+
+const addJoinRequest = (req, res) => {
+  Table.findById(req.params.table_id, (error, table) => {
+    if (error) {
+      console.log(error)
+      res.status(403).send(error)
+    } else if (table) {
+      User.findById(req.params.user_id, (error, user) => {
+        if (error || !user) {
+          console.log(error)
+          res.status(404).send({ message: 'User not found' })
+        } else {
+          table.joinRequests = [...table.joinRequests, user._id]
+          table.save((error, table) => {
+            if (error || !table) {
+              res.status(400).send({ message: 'Table could not be saved' })
+            } else{
+              res.send({
+                message: 'Join Request added successfully',
+                table: table
+              })
+            }
+          })
+        }
+      })
+    } else {
+      res.status(404).send({ error: 'Table not found' })
+    }
+  })
+}
+
+const removeJoinRequest = (req, res) => {
+  Table.findById(req.params.table_id, (error, table) => {
+    if (error) {
+      console.log(error)
+      res.status(403).send(error)
+    } else if (table) {
+      table.joinRequests = table.joinRequests.filter(x =>  x._id !== req.params.user_id)
+      table.save((error, table) => {
+        if (error || !table) {
+          res.status(400).send({ message: 'User not found' })
+        } else{
+          res.send({
+            message: 'Join Request removed successfully',
+            table: table
+          })
+        }
+      })
+    } else {
+      res.status(404).send({ error: 'Table not found' })
+    }
+  })
+}
+
 export default {
   findAll,
   findOne,
   create,
   update,
-  destroy
+  destroy,
+  addGame,
+  removeGame,
+  addPlayer,
+  removePlayer,
+  addJoinRequest,
+  removeJoinRequest
 }
