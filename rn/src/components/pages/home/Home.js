@@ -15,7 +15,6 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import BackgroundImage from './BackgroundImage';
 import Logo from './Logo';
 import Header from '../../ui_elems/Header';
 import Button from '../../ui_elems/Button';
@@ -29,24 +28,18 @@ class Home extends Component {
         <StatusBar backgroundColor="#055" barStyle="light-content" />
         <Logo />
         <View style={styles.spacer} />
-        <View style={styles.bodyContent}>
-          <TouchableOpacity 
-            onPress={() => {
-              this.props.navigation.navigate('Register');
-            }} 
-            style={styles.buttonStyle}>
-            <Text style={styles.textStyle}>Register</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.bodyContent}>
-          <TouchableOpacity 
-            onPress={() => {
-              this.props.navigation.navigate('Login');
-            }} 
-            style={styles.buttonStyle}>
-            <Text style={styles.textStyle}>Login</Text>
-          </TouchableOpacity>
-        </View>
+        <Button
+          text="Register"
+          onPress={() => {
+            this.props.navigation.navigate('Register');
+          }}
+        />
+        <Button
+          text="Log in"
+          onPress={() => {
+            this.props.navigation.navigate('Login');
+          }}
+        />
       </View>
     );
   }

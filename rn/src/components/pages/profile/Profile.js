@@ -162,14 +162,16 @@ const styles = StyleSheet.create({
     height:200,
   },
   historyView:{
+    width: 300,
     padding: 30,
     borderRadius:30,
     backgroundColor: '#bfdfbf'
   },
   summaryView:{
+    width: 300,
     padding: 20,
     borderRadius:30,
-    backgroundColor: '#80c080',
+    backgroundColor: '#bfdfbf',
     alignSelf: 'auto'
   },
   summaryGameName:{
@@ -180,7 +182,9 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   eloGameName:{
-    fontSize: 12
+    fontSize: 12,
+    borderBottomWidth: 2,
+    borderColor: '#055'
   },
   eloRow:{
     flexDirection: "row"

@@ -17,7 +17,7 @@ import Colors from '../../../../node_modules/react-native/Libraries/NewAppScreen
 const BackgroundImage = props => (
   <ImageBackground
     accessibilityRole={'image'}
-    source={require('../../../../assets/images/boardgames.jpeg')}
+    source={require('./bg.png')}
     style={styles.background}
     imageStyle={styles.logo}></ImageBackground>
 );

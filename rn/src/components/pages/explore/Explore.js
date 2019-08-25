@@ -93,15 +93,7 @@ class Explore extends Component {
                 }}
               />
             );
-          })
-        //   .sort(function(a, b){
-        //     keyA = a.distance
-        //     keyB = b.distance
-        //     // Compare the 2 dates
-        //     if(a.distance < b.distance) return -1
-        //     if(a.distance > b.distance) return 1
-        //     return 0
-        // })
+          }).sort((a, b) => a.props.distance - b.props.distance)
         }
         </View>
       </ScrollView>);
