@@ -66,13 +66,10 @@ class Table extends Component {
   }
 
   cancelJoinRequest = async () => {
-    console.log("pressed");
     try {
-      console.log("cancelling", this.props.id);
       await TableApi.removeJoinRequest({id: this.props.id, userId: this.props.user});
     } catch (e) {
       console.log(e);
-      console.log(this.props);
     }
   }
 
@@ -174,7 +171,7 @@ class Table extends Component {
       {this.state.status === "In-Progress" ||
         <Button
           text="Record game result"
-          onPress={() => {console.log("lskdjflsk"); this.createResult();}}
+          onPress={this.createResult}
         />
       }
     </View>;
