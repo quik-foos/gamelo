@@ -30,8 +30,10 @@ const styles = {
     padding:10,
   },
   textStyle: {
+    fontSize: 18,
     alignSelf: 'center',
-    color: 'white'
+    color: 'white',
+    
   },
 };
 
