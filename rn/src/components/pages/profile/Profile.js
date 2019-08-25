@@ -27,7 +27,7 @@ class Profile extends Component {
     loading: false,
     view: "history",
     gameHistory: [],
-    gameSummary: [{game: "Catan",played:112,elo:1600},{game: "Catan",played:214,elo:1640},{game: "Monopoly",played:42,elo:1200}]
+    gameSummary: [{game: "Catan",played:112,elo:1600},{game: "Connect 4",played:214,elo:1640},{game: "Monopoly",played:42,elo:1200}]
   }
 
 
@@ -48,12 +48,17 @@ class Profile extends Component {
       ToastAndroid.show("Something went wrong. Please check your internet connection", ToastAndroid.SHORT)
     }
     try {
-      gameres = await ResultApi.findAll({player:this.props.user})
-      console.log(gameres)
+      rez = await ResultApi.findAll({id:this.props.user})
+      gameres = rez.data
+      if(gameres) this.setState({
+        gameHistory: gameres
+      })
+      console.log(this.state.gameHistory)
     } catch(e){
       console.log(e.response)
       ToastAndroid.show("Something went wrong. Please check your internet connection", ToastAndroid.SHORT)
     }
+    
   }
 
   signout = async () => {
@@ -81,24 +86,45 @@ class Profile extends Component {
 
   render() {
     const {buttonContainer}=styles;
-
+    
     const History = 
       (
-      <View>
-        <Text> Board Game Name </Text>
+      <View style={styles.historyView}>
+        {this.state.gameHistory.map((game,key)=>{
+          return(
+            <View key={key} style={styles.recordedGame}>
+              <Text style={styles.recordedGameName}>
+                {key+1}. {game.game.name}
+              </Text>
+              <Text> Players: </Text>
+              {game.players.map((player,key)=>{
+                return(
+                  <View key={key}>
+                    <Text>
+                      {player.firstName}
+                    </Text>
+                  </View>
+                )
+              })}
+            </View>
+          )
+        })}
       </View>
       );
     const EloSummary = 
       (
-      <View>
+      <View style={styles.summaryView}>
        {this.state.gameSummary.map((game, key)=>{
          return(
-           <View key={key}>
-             <Text>
-              {game.game}  {game.played} 
-              </Text>
+           <View  style={styles.eloGame} key={key}>
+              <Text style={styles.summaryGameName}>
+                {game.game} 
+                </Text>
+                <Text style={styles.eloGameName}>
+                Elo:{game.elo} 
+                </Text>
               <Text>
-              {game.elo}
+              Played: {game.played}
              </Text>
            </View>
          )
@@ -117,12 +143,12 @@ class Profile extends Component {
                 <Text style={styles.name}>{`${this.state.firstName} ${this.state.lastName}`}</Text>
                 <Text style={styles.info}>{this.state.username}</Text>
                 <Text style={styles.description}>I love strategy board games! Always up for a round of Catan or quik fooz</Text>
+                <ButtonSmall text="Sign Out" onPress={this.signout} /> 
                 <View style={buttonContainer}>
                   <ButtonSmall text="Game History" onPress={this.displayHistory}/> 
                   <ButtonSmall text="Game Summary" onPress={this.displaySummary}/> 
                 </View>
                 { this.state.view === "history" ? History : EloSummary}
-                <ButtonSmall text="Sign Out" onPress={this.signout} /> 
               </View>
               </View>
         </ScrollView>
@@ -130,11 +156,34 @@ class Profile extends Component {
     );
   }
 }
-
 const styles = StyleSheet.create({
   header:{
     backgroundColor: BUTTON_COLOR,
     height:200,
+  },
+  historyView:{
+    padding: 30,
+    borderRadius:30,
+    backgroundColor: '#bfdfbf'
+  },
+  summaryView:{
+    padding: 20,
+    borderRadius:30,
+    backgroundColor: '#80c080',
+    alignSelf: 'auto'
+  },
+  summaryGameName:{
+    fontSize: 32
+  },
+  eloGame:{
+
+    marginBottom: 40,
+  },
+  eloGameName:{
+    fontSize: 12
+  },
+  eloRow:{
+    flexDirection: "row"
   },
   avatar: {
     width: 130,
@@ -149,6 +198,14 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
+  },
+  recordedGame:{
+    borderStyle: 'solid',
+    marginBottom: 20,
+    borderColor:'black'
+  },
+  recordedGameName:{
+    fontSize: 22
   },
   name:{
     fontSize:22,

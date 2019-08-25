@@ -155,7 +155,7 @@ class Table extends Component {
 
   startPlaying = () => {
     try {
-      TableApi.update(this.props.id, {status: "In-Progress"});
+      TableApi.update({id: this.props.id, status: "In-Progress"});
     } catch {
 
     }
@@ -163,7 +163,7 @@ class Table extends Component {
 
   endSession = () => {
     try {
-      TableApi.update(this.props.id, {status: "Completed"});
+      TableApi.update({id: this.props.id, status: "Completed"});
     } catch {
 
     }

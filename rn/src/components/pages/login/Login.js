@@ -11,7 +11,7 @@ import {
   ActivityIndicator} from 'react-native';
 import { Input } from 'react-native-elements';
 // import Input from '../../ui_elems/Input';
-import Button from '../../ui_elems/Button';
+import ButtonSmall from '../../ui_elems/Button';
 import {connect} from 'react-redux';
 import {UserApi} from '../../../api';
 import {loginAction} from '../../../actions';
@@ -74,7 +74,7 @@ class Login extends Component {
           />
         <Text />
         <View style={{height: 50}}>
-          <Button text="Sign In" onPress={this.login} />
+          <ButtonSmall text="Sign In" onPress={this.login} />
         </View>
         {this.getLoader()}
       </View>
