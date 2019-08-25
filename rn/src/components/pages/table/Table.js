@@ -1,62 +1,269 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {View, Text, Alert, TouchableOpacity} from 'react-native';
+import CreateTable from './CreateTable';
+import MakeResult from './MakeResult';
+import Result from './Result';
+import Input from '../../ui_elems/Input';
+import Button from '../../ui_elems/Button';
 import ButtonSmall from '../../ui_elems/ButtonSmall';
+import { connect } from 'react-redux';
+import { TableApi } from '../../../api';
 
 class Table extends Component {
   constructor(props) {
     super(props);
     this.state = {
       max: 6,
-      status: 'Available',
-      players: ['Fred', 'Wayne', 'Michael', 'Lucas', "Aizen"],
-      joinRequests: ['Jimmy Zhang', 'Bool Ceanz'],
+      status: "Scheduled",
+      hostId: "",
+      hostName: "",
+      players: [],
+      joinRequests: [],
+      results: [],
+      view: "normal", // for a host's view, guest's view, etc.
+        // "create" for creating a table
+        // "making-result" for creating a game record
+        // "viewing-result" for viewing and accepting / rejecting a game record
+      resultIdViewed: 0
+        // when view is "viewing-result"
     };
   }
-  requestJoin = () => {
-    Alert.alert('Request Sent!');
+
+  componentDidMount() {
+    this.fetchPlayers();
+    this.fetchJoinRequests();
+    this.fetchResults();
+  }
+
+  fetchPlayers = async () => {
+    try {
+      const response = await TableApi.findOne(this.props.id);
+      const table = await response.data;
+      this.setState({
+        players: table.players
+      });
+    } catch {
+    }
+  }
+
+  fetchJoinRequests = async () => {
+    try {
+      const response = await JoinRequestApi.findAll();
+      const joinRequests = await response.data;
+      joinRequests = joinRequests.filter(datum => {datum.table._id === this.props.id});
+      this.setState({
+        joinRequests: joinRequests
+      });
+    } catch {
+    }
+  }
+
+  fetchResults = async () => {
+    try {
+    } catch {
+    }
+  }
+
+  kickPlayer = (playerId) => {
+
+  }
+
+  acceptJoinRequest = (joinRequestId) => {
+
+  }
+
+  rejectJoinRequest = (joinRequestId) => {
+
+  }
+
+  startPlaying = () => {
+
+  }
+
+  endSession = () => {
+
+  }
+
+  navigateToProfile = (profile_id) => {
+    this.props.navigation.navigate('Profile', {id: profile_id});
+  };
+  
+  goToNormalView = () => {
     this.setState({
-      status: 'Requested',
+      view: "normal"
+    })
+  }
+
+  goToCreateView = () => {
+    this.setState({
+      view: "create"
     });
-  };
-  navigateToProfile = () => {
-    this.props.navigation.navigate('Profile');
-  };
+  }
+
+  goToResultView = (resultId) => {
+    this.setState({
+      view: "viewing-result",
+      resultIdViewed: resultId
+    })
+  }
+
+  getNoneView = () => {
+    return <View>
+      <Text>You're not part of any table.</Text>
+      <Button
+        text="Create a table"
+        onPress={this.goToCreateView()}
+      />
+    </View>;
+  }
+
+  getWaitingView = () => {
+    return <View>
+      <Text>{this.state.hostName}'s Table</Text>
+      {this.getCurrentPlayers()}
+      <Text>Waiting for host to accept&hellip;</Text>
+    </View>;
+  }
+
+  getGuestView = () => {
+    return <View>
+      <Text>{this.state.hostName}'s Table</Text>
+      {this.getCurrentPlayers()}
+      {this.state.status === "Scheduled" &&
+        <Text>Waiting to start&hellip;</Text>
+      }
+      {(this.state.status === "In-Progress" || this.state.status === "Completed") &&
+        this.getResults()
+      }
+      {this.state.status === "In-Progress" ||
+        <Button
+          text="Record game result"
+          onPress={this.createResult}
+        />
+      }
+    </View>;
+  }
+
+  getHostView = () => {
+    return <View>
+      <Text>Your Table</Text>
+      {this.getCurrentPlayers()}
+      {this.state.status === "Scheduled" &&
+        <Button
+          text="Start playing"
+          onPress={this.startPlaying}
+        />
+      }
+      {(this.state.status === "In-Progress" || this.state.status === "Completed") &&
+        this.getResults()
+      }
+      {this.state.status === "In-Progress" &&
+        <Button
+          text="End session"
+          onPress={this.endSession}
+        />
+      }
+      {this.state.status === "In-Progress" ||
+        <Button
+          text="Record game result"
+          onPress={this.createResult}
+        />
+      }
+    </View>;
+  }
+
+  getCreateView = () => {
+    return <CreateTable cancelAction={this.goToNormalView}/>;
+  }
+
+  getCreateResultView = () => {
+    return <MakeResult
+      cancelAction={this.goToNormalView}
+      tableId={this.props.id}
+    />;
+  }
+
+  getResultView = () => {
+    return <Result
+      id={this.state.resultIdViewed}
+      cancelAction={this.goToNormalView}
+    />;
+  }
+
+  getCurrentPlayers = () => <Fragment>
+    <Text>Current Players {this.state.players.length} / {this.state.max} </Text>
+    {this.state.players.map((player, key) => {
+      return <TouchableOpacity key={key} onPress={() => {this.navigateToProfile(player._id)}}>
+        <Text>
+          {player.username}
+          {(this.props.user === this.state.hostId) &&
+            <ButtonSmall
+              text="Kick player"
+              onPress={() => {this.kickPlayer(player._id)}}
+            />
+          }
+        </Text>
+      </TouchableOpacity>;
+    })}
+  </Fragment>;
+
+  getJoinRequests = () => <Fragment>
+    <Text>Join Requests</Text>
+    {this.state.joinRequests.map((joinRequest, id) => {
+      return <View key={id}>
+        {joinRequest.player.username}
+        <ButtonSmall
+          text="Accept"
+          onPress={() => {this.acceptJoinRequest(joinRequest._id)}}
+        />
+        <ButtonSmall
+          text="Reject"
+          onPress={() => {this.rejectJoinRequest(joinRequest._id)}}
+        />
+      </View>;
+    })}
+  </Fragment>;
+  
+  getResults = () => <Fragment>
+    <Text>Games Played</Text>
+    {this.state.results.map((result, id) => {
+      return <TouchableOpacity key={id} onPress={() => {this.goToResultView(result._id)}}>
+        <Text>
+          {result.name}
+        </Text>
+      </TouchableOpacity>;
+    })}
+  </Fragment>
+
 
   render() {
-    return (
-      <View>
-        <Text> Fred's Table{'\n'}</Text>
-        <Text>Current Players {this.state.players.length}/{this.state.max}{'\n'}</Text>
-
-        {this.state.players.map((data, key) => {
-          return (
-            <TouchableOpacity key={key} onPress={this.navigateToProfile}>
-              <Text>
-                {data} {'\n'}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-
-        <Button text="Request to Join" onPress={this.requestJoin} />
-        <Text>
-          Status: {this.state.status}
-          {'\n\n'}
-        </Text>
-
-        <Text>Join Requests{'\n'}</Text>
-        {this.state.joinRequests.map((request, key) => {
-          return (
-            <View key={key}>
-              <Text>{request}</Text>
-              <Button text="Accept"/>
-              <Button text="Reject"/>
-            </View>
-          );
-        })}
-      </View>
-    );
+    if (this.state.view === "making-result") {
+      return this.getCreateResultView();
+    }
+    if (this.state.view === "viewing-result") {
+      return this.getResultView();
+    }
+    if (this.state.view === "create") {
+      return this.getCreateView();
+    }
+    if (this.props.user === this.state.hostId) {
+      // This is a host
+      return this.getHostView();
+    }
+    if (this.state.players.map(player => player._id).includes(this.props.user)) {
+      // This is a guest
+      return this.getGuestView();
+    }
+    if (this.state.joinRequests.includes(this.props.user)) {
+      // User has an active join request
+      return this.getWaitingView();
+    }
+    return this.getNoneView();
   }
 }
 
-export default Table;
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps)(Table);
