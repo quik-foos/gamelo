@@ -79,6 +79,7 @@ class Explore extends Component {
                 players={table.players}
                 games="Settlers of Catan, Monopoly, Scrabble"
                 host={table.host.firstName}
+                photoURL={table.photoURL}
                 distance={this.getDistanceFromLatLonInKm(
                   this.props.latitude, 
                   this.props.longitude, 
@@ -92,7 +93,16 @@ class Explore extends Component {
                 }}
               />
             );
-          })}
+          })
+        //   .sort(function(a, b){
+        //     keyA = a.distance
+        //     keyB = b.distance
+        //     // Compare the 2 dates
+        //     if(a.distance < b.distance) return -1
+        //     if(a.distance > b.distance) return 1
+        //     return 0
+        // })
+        }
         </View>
       </ScrollView>);
   }
@@ -108,7 +118,7 @@ class Explore extends Component {
     if (this.state.mapView) {
       return (
         <View style={{ flex: 1 }}>
-          <ButtonSmall text="Exit" onPress={() => this.setState({ mapView: false })} />
+          <ButtonSmall text="List View" onPress={() => this.setState({ mapView: false })} />
           <Map tables={this.state.tables} />
         </View>
       )
@@ -131,7 +141,7 @@ class Explore extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: "5d619ec100ce9e044f1ba179",
+    user: state.user,
     latitude: state.location.latitude,
     longitude: state.location.longitude
   }

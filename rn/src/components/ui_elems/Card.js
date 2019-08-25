@@ -12,8 +12,14 @@ const Card = (props) => {
 
 const styles = {
     containerStyle: {
+      flexDirection: 'row',
+      flex:1,
+      paddingLeft: 15,
+      paddingRight: 15,
+      paddingTop: 15,
+      paddingBottom: 15,
       borderWidth: 1,
-      borderRadius: 2,
+      borderRadius: 1,
       borderColor: '#ddd',
       borderBottomWidth: 0,
       shadowColor: '#000',
@@ -21,9 +27,9 @@ const styles = {
       shadowOpacity: 0.1,
       shadowRadius: 2,
       elevation: 1,
-      marginLeft: 5,
-      marginRight: 5,
-      marginTop: 10
+      marginLeft: 20,
+      marginRight: 20,
+      marginTop: 10,
     }
   };
 export default Card;

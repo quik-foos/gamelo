@@ -29,6 +29,7 @@ class Login extends Component {
         password: this.state.password,
       });
       let user = await res.data.user._id
+      console.log(user)
       await this.setState({loading: false});
       await this.props.dispatch(loginAction(user));
     } catch (e) {

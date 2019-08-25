@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    user: "5d619ec100ce9e044f1ba179"
+    user: state.user
   }
 }
 
