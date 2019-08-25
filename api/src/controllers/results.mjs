@@ -1,7 +1,10 @@
 import Result from '../models/result.mjs'
 
 const findAll = (req, res) => {
-  Result.find({}, (error, results) => {
+  let query = {}
+  if (req.params.table) query.table = req.params.table
+
+  Result.find(query, (error, results) => {
     if (error) {
       console.log(error)
       res.status(500).send(error)
@@ -81,10 +84,65 @@ const destroy = (req, res) => {
   })
 }
 
+const addValidation = (req, res) => {
+  Result.findById(req.params.result_id, (error, result) => {
+    if (error) {
+      console.log(error)
+      res.status(403).send(error)
+    } else if (result) {
+      User.findById(req.params.user_id, (error, user) => {
+        if (error || !user) {
+          console.log(error)
+          res.status(404).send({ message: 'User not found' })
+        } else {
+          result.users = [...result.users, user._id]
+          result.save((error, result) => {
+            if (error || !result) {
+              res.status(400).send({ message: 'Result could not be saved' })
+            } else{
+              res.send({
+                message: 'User added successfully',
+                result: result
+              })
+            }
+          })
+        }
+      })
+    } else {
+      res.status(404).send({ error: 'Result not found' })
+    }
+  })
+}
+
+const removeValidation = (req, res) => {
+  Result.findById(req.params.table_id, (error, result) => {
+    if (error) {
+      console.log(error)
+      res.status(403).send(error)
+    } else if (result) {
+      result.users = result.users.filter(x =>  x._id !== req.params.user_id)
+      result.save((error, result) => {
+        if (error || !result) {
+          res.status(400).send({ message: 'User not found' })
+        } else{
+          res.send({
+            message: 'User removed successfully',
+            result: result
+          })
+        }
+      })
+    } else {
+      res.status(404).send({ error: 'Result not found' })
+    }
+  })
+}
+
 export default {
   findAll,
   findOne,
   create,
   update,
-  destroy
+  destroy,
+  addValidation,
+  removeValidation
 }
