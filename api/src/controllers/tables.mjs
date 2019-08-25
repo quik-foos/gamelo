@@ -15,7 +15,7 @@ const findAll = (req, res) => {
   Table.find(query, (error, tables) => {
     if (error) {
       console.log(error)
-      res.status(500).send(error)
+      res.status(400).send(error)
     } else {
       res.send(tables)
     }
@@ -26,7 +26,7 @@ const findOne = (req, res) => {
   Table.findById(req.params.table_id, (error, table) => {
     if (error) {
       console.log(error)
-      res.status(500).send(error)
+      res.status(400).send(error)
     } else if (table) {
       res.send(table)
     } else {
@@ -41,7 +41,7 @@ const create = (req, res) => {
   }).save((error, table) => {
     if (error || !table) {
       console.log(error)
-      res.status(500).send(error)
+      res.status(400).send(error)
     } else {
       res.send({
         message: 'Table created successfully',
@@ -55,7 +55,7 @@ const update = (req, res) => {
   Table.findById(req.params.table_id, (error, table) => {
     if (error) {
       console.log(error)
-      res.status(500).send(error)
+      res.status(400).send(error)
     } else if (table) {
       Object.keys(req.body).forEach(key => {
         if (req.body) {
@@ -65,7 +65,7 @@ const update = (req, res) => {
       Table.save((error, table) => {
         if (error || !table) {
           console.log(error)
-          res.status(500).send(error)
+          res.status(400).send(error)
         } else {
           res.send({
             message: 'Table updated successfully',
@@ -83,7 +83,7 @@ const destroy = (req, res) => {
   Table.remove({ _id: req.params.table_id }, (error) => {
     if (error) {
       console.log(error)
-      res.status(500).send(error)
+      res.status(404).send({ message: 'Table not found' })
     } else {
       res.send({
         message: 'Table deleted successfully'
