@@ -1,34 +1,43 @@
-import React, {Component} from 'react';
-import {View, Text} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, Image } from 'react-native';
 import Button from '../../ui_elems/Button';
 import Card from '../../ui_elems/Card';
 import CardSection from '../../ui_elems/CardSection';
 
-import {TouchableOpacity} from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 export default class NearbyTable extends Component {
-  
+
   constructor(props) {
     super(props);
   }
 
-
   render() {
     return (
-      <TouchableOpacity onPress={this.props.onPress}>
-        <Card style={styles.cardStyle}>
-          <CardSection>
-            <View style={styles.headerContentStyle}>
-              <Text style={[styles.albumTitle, styles.headerTextStyle]}>
-                Host: {this.props.host} {'\n'}
-                Distance in Km: {this.props.distance} {'\n'}
-                Start Time: {this.props.start.split('T')[0]} at {this.props.start.split('T')[1].split('.000')[0]} {'\n'}
-                Games: {this.props.games}
-                {'\n\n'}
-              </Text>
-            </View>
-          </CardSection>
-        </Card>
+      <TouchableOpacity style={{width: '30%' }} onPress={this.props.onPress}>
+        <View style={{ flex: 1, flexDirection: 'row', backgroundColor: 'black'}}>
+          <Card>
+            <CardSection>
+              <View>
+                <Image
+                  source={{ uri: this.props.photoURL }}
+                  style={styles.imageStyle}
+                />
+              </View>
+            </CardSection>
+            <CardSection>
+              <View>
+                <Text style={[styles.albumTitle, styles.headerTextStyle]}>
+                  Hosted by {this.props.host} {'\n'}
+                  {this.props.distance.toFixed(1)} Km(s) Away{'\n'}
+                  Starts {this.props.start.split('T')[0]} at {this.props.start.split('T')[1].split('.000')[0]} {'\n'}
+                  {/* Games {this.props.games} */}
+                </Text>
+              </View>
+            </CardSection>
+
+          </Card>
+        </View>
       </TouchableOpacity>
     );
   }
@@ -37,29 +46,18 @@ export default class NearbyTable extends Component {
 
 const styles = {
   albumTitle: {
-      color: 'black'
-  },
-  headerContentStyle: {
-      flexDirection: 'column',
-      justifyContent: 'space-around'
-  },
-  headerTextStyle: {
-      fontSize: 18
-  },
-  thumbnailStyle: {
-      height: 50,
-      width: 50
+    color: 'black'
   },
   thumbnailContainerStyle: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginLeft: 10,
-      marginRight: 10
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginRight: 10
   },
   imageStyle: {
-      height: 300,
-      flex: 1,
-      width: null
+    flex: 1,
+    width: 100,
+    height: 100
   },
   cardStyle: {
   }

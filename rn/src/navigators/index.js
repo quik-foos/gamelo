@@ -27,7 +27,7 @@ class Navigator extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: "5d619ec100ce9e044f1ba179"
   };
 };
 

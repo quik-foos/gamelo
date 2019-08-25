@@ -15,6 +15,7 @@ import { UserApi, ResultApi } from '../../../api';
 import { logoutAction } from '../../../actions';
 import ButtonSmall from '../../../components/ui_elems/ButtonSmall'
 import { ScrollView } from 'react-native-gesture-handler';
+import SearchBar from '../../pages/explore/SearchBar';
 
 class Profile extends Component {
 
@@ -114,6 +115,7 @@ class Profile extends Component {
               <View style={styles.bodyContent}>
                 <Text style={styles.name}>{`${this.state.firstName} ${this.state.lastName}`}</Text>
                 <Text style={styles.info}>{this.state.username}</Text>
+                <SearchBar />
                 <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text>
                 <View>
                   <ButtonSmall text="Game History" onPress={this.displayHistory}/> 

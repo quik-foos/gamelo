@@ -73,6 +73,7 @@ class Explore extends Component {
                 players={table.players}
                 games="Settlers of Catan, Monopoly, Scrabble"
                 host={table.host.firstName}
+                photoURL={table.photoURL}
                 distance={this.getDistanceFromLatLonInKm(
                   this.props.latitude, 
                   this.props.longitude, 
@@ -103,7 +104,7 @@ class Explore extends Component {
     if (this.state.mapView) {
       return (
         <View style={{ flex: 1 }}>
-          <ButtonSmall text="Exit" onPress={() => this.setState({ mapView: false })} />
+          <ButtonSmall text="List View" onPress={() => this.setState({ mapView: false })} />
           <Map tables={this.state.tables} />
         </View>
       )
