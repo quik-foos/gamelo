@@ -14,6 +14,7 @@ class Table extends Component {
     this.state = {
       max: 6,
       status: "Scheduled",
+      id: null,
       hostId: "",
       hostName: "",
       players: [],
@@ -31,17 +32,54 @@ class Table extends Component {
 
   componentDidMount() {
     this.updateData();
-    this.interval = setInterval(this.updateData, 3000);
+    this.interval = setInterval(this.getRelevantTable, 3000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   updateData = () => {
-    this.fetchTable();
     this.fetchResults();
+    this.fetchTable();
+  }
+
+  getRelevantTable = async () => {
+    try {
+      let response = await TableApi.findAll({host: this.props.user});
+      let tables = await response.data;
+      if (tables.length > 0) {
+        this.setState({
+          id: tables[0]._id
+        }, 
+        this.updateData);
+        return;
+      }
+      response = await TableApi.findAll({players: this.props.user});
+      tables = await response.data;
+      if (tables.length > 0) {
+        this.setState({
+          id: tables[0]._id
+        },
+        this.updateData);
+        return;
+      }
+      response = await TableApi.findAll({joinRequests: this.props.user});
+      tables = await response.data;
+      if (tables.length > 0) {
+        this.setState({
+          id: table[0]._id
+        },
+        this.updateData);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   fetchTable = async () => {
     try {
-      const response = await TableApi.findOne({id: this.props.id});
+      const response = await TableApi.findOne({id: this.state.id});
       const table = await response.data;
       this.setState({
         status: table.status,
@@ -56,7 +94,7 @@ class Table extends Component {
 
   fetchResults = async () => {
     try {
-      const response = await ResultApi.findAll({table: this.props.id});
+      const response = await ResultApi.findAll({table: this.state.id});
       const results = await response.data;
       this.setState({
         results: results
@@ -67,7 +105,7 @@ class Table extends Component {
 
   cancelJoinRequest = async () => {
     try {
-      await TableApi.removeJoinRequest({id: this.props.id, userId: this.props.user});
+      await TableApi.removeJoinRequest({id: this.state.id, userId: this.props.user});
     } catch (e) {
       console.log(e);
     }
@@ -75,14 +113,14 @@ class Table extends Component {
 
   kickPlayer = (playerId) => {
     try {
-      TableApi.removePlayer({id: this.props.id, userId: playerId});
+      TableApi.removePlayer({id: this.state.id, userId: playerId});
     } catch {
     }
   }
 
   acceptJoinRequest = (joinRequestId) => {
     try {
-      TableApi.removeJoinRequest({id: this.props.id, userId: joinRequestId});
+      TableApi.removeJoinRequest({id: this.state.id, userId: joinRequestId});
       TableApi.addPlayer({userId: joinRequestId});
     } catch {
 
@@ -91,7 +129,7 @@ class Table extends Component {
 
   rejectJoinRequest = (joinRequestId) => {
     try {
-      TableApi.removeJoinRequest({id: this.props.id, userId: joinRequestId});
+      TableApi.removeJoinRequest({id: this.state.id, userId: joinRequestId});
     } catch {
 
     }
@@ -99,7 +137,7 @@ class Table extends Component {
 
   startPlaying = () => {
     try {
-      TableApi.update(this.props.id, {status: "In-Progress"});
+      TableApi.update(this.state.id, {status: "In-Progress"});
     } catch {
 
     }
@@ -107,7 +145,7 @@ class Table extends Component {
 
   endSession = () => {
     try {
-      TableApi.update(this.props.id, {status: "Completed"});
+      TableApi.update(this.state.id, {status: "Completed"});
     } catch {
 
     }
@@ -212,7 +250,7 @@ class Table extends Component {
   getCreateResultView = () => {
     return <MakeResult
       cancelAction={this.goToNormalView}
-      tableId={this.props.id}
+      tableId={this.state.id}
     />;
   }
 

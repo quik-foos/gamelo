@@ -94,10 +94,11 @@ class CreateTable extends Component {
         joinRequests: [],
         startTime: moment(this.state.dateTime).toDate(),
         maxPlayers: this.state.maxPlayers,
-        location: getLatLong(),
+        location: this.getLatLong(),
         status: "Scheduled"
       });
-    } catch {
+    } catch (e) {
+      console.log(e)
     }
   }
 
@@ -124,16 +125,6 @@ class CreateTable extends Component {
         <TouchableOpacity onPress={() => this.showLocationPicker()}>
           <Text>Location</Text>
         </TouchableOpacity>
-        <Fumi
-            label={'Location'}
-            iconClass={Entypo}
-            iconName={'location-pin'}
-            iconColor={'#005756'}
-            iconSize={20}
-            iconWidth={40}
-            inputPadding={16}
-            onChangeText={location => this.setState({location})}
-          />
         <DateTimeInput
           label="Date and time"
           onChangeDate={this.setDateTime}
@@ -157,10 +148,6 @@ class CreateTable extends Component {
           <Picker.Item label="10" value="10" />
         </Picker>
         <Text>Choose games</Text>
-        {this.getGames()}
-        <GamePicker
-          onSelectGame={this.addGame}
-        />
       </View>
         <Button
           text="Cancel"
