@@ -61,8 +61,10 @@ class MakeResult extends Component {
           players: playersOut
         };
       } else {
+        let playersOut = prevState.players.slice(0);
+        playersOut.push(player)
         return {
-          players: prevState.players.slice(0).push(player)
+          players: playersOut
         };
       }
     })
@@ -77,8 +79,10 @@ class MakeResult extends Component {
           winners: winnersOut
         };
       } else {
+        let winnersOut = prevState.winners.slice(0);
+        winnersOut.push(player);
         return {
-          winners: prevState.winners.slice(0).push(winner)
+          winners: winnersOut
         };
       }
     })

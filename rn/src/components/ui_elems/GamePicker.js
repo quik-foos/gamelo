@@ -43,7 +43,7 @@ export default class GamePicker extends Component {
       {this.filterData().map((datum, key) =>
         <TouchableOpacity key={key} onPress={() => {
           this.props.onSelectGame(datum);
-          this.setState({query: item ? item.name: ""});
+          this.setState({query: datum ? datum.name: ""});
         }}>
           <Text>{datum.name}</Text>
         </TouchableOpacity>
@@ -65,10 +65,10 @@ export default class GamePicker extends Component {
             onFocus={() => {this.setState({
               enteringQuery: true
             })}}
-            onBlur={() => {this.setState({
+            onBlur={() => {setTimeout(() => {this.setState({
               enteringQuery: false,
               query: this.props.value ? this.props.value.name : ""
-            })}}
+            })}, 50)}}
           />
           <View>
             {(this.state.query.length > 2 && this.state.enteringQuery) &&

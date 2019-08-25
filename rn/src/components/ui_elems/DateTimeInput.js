@@ -32,7 +32,7 @@ export default class DateTimeInput extends Component {
         </Text>
         <TouchableOpacity onPress={this.showPicker}>
           <Text>
-            {moment(this.props.date).format("YYYY-MM-DD h:mm a")}
+            {this.props.date ? moment(this.props.date).format("YYYY-MM-DD h:mm a") : "select"}
           </Text>
         </TouchableOpacity>
         <DateTimePicker

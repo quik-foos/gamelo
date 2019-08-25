@@ -8,6 +8,10 @@ import DateTimeInput from '../../ui_elems/DateTimeInput';
 import GamePicker from '../../ui_elems/GamePicker';
 import { TableApi } from '../../../api';
 import { connect } from 'react-redux';
+import RNGooglePlaces from 'react-native-google-places';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+
 const moment = require('moment');
 
 class CreateTable extends Component {
@@ -19,6 +23,18 @@ class CreateTable extends Component {
       maxPlayers: 4,
       games: []
     };
+  }
+
+  showLocationPicker = () => {
+    RNGooglePlaces.openAutocompleteModal()
+    .then((place) => {
+      this.setState({
+        location: { lat: place.location.latitude, lng: place.location.longitude }
+      })
+		// place represents user's selection from the
+		// suggestions and it is a simplified Google Place object.
+    })
+    .catch(error => console.log(error.message));  // error is a Javascript Error object
   }
 
   setLocation = location => {
@@ -41,21 +57,21 @@ class CreateTable extends Component {
 
   addGame = game => {
     this.setState(prevState => {
-      if (prevState.games.map(game => game._id).includes(game._id)) {
+      if (prevState.games.map(g => g._id).includes(game._id)) {
         return;
       } else {
-        return {
-          games: prevState.games.slice(0).push(game)
-        };
+        let gamesOut = prevState.games.slice(0);
+        gamesOut.push(game);
+        return ({games: gamesOut});
       }
     });
   }
 
   removeGame = game => {
     this.setState(prevState => {
-      if (prevState.games.map(game => game._id).includes(game._id)) {
+      if (prevState.games.map(g => g._id).includes(game._id)) {
         let gamesOut = prevState.games.slice(0);
-        gamesOut.splice(gamesOut.map(game => game._id).indexOf(game._id), 1);
+        gamesOut.splice(gamesOut.map(g => g._id).indexOf(game._id), 1);
         return {
           games: gamesOut
         }
@@ -90,12 +106,12 @@ class CreateTable extends Component {
   }
 
   getGames = () => {
-    this.state.games.map(game =>
-      <View>
+    return this.state.games.map((game, id) =>
+      <View key={id}>
         <Text>{game.name}</Text>
         <Button
           text="remove"
-          onPress={this.removeGame(game)}
+          onPress={() => {this.removeGame(game)}}
         />
       </View>
     );
@@ -105,6 +121,9 @@ class CreateTable extends Component {
     return <ScrollView>
       <View style={styles.container}>
         <Text style={styles.titleText}>Create a Table</Text>
+        <TouchableOpacity onPress={() => this.showLocationPicker()}>
+          <Text>Location</Text>
+        </TouchableOpacity>
         <Fumi
             label={'Location'}
             iconClass={Entypo}
@@ -143,7 +162,6 @@ class CreateTable extends Component {
           onSelectGame={this.addGame}
         />
       </View>
-
         <Button
           text="Cancel"
           onPress={this.cancelTable}
