@@ -46,7 +46,7 @@ class Map extends Component {
 							title={`${table.host.username}'s Boardgames Table`}
 							description={`${table.startTime.split('T')[0]} @ ${table.startTime.split('T')[1].split(".000")[0]}`}>
 							{/* --> ${table.endTime.split('T')[0]} @ ${table.endTime.split('T')[1]} */}
-							<MapView.Callout onPress={() => this.setState({ selectedTable: table._id })} />
+							<MapView.Callout onPress={() => {this.props.displayTable(table._id)}} />
 						</MapView.Marker>
 					))}
 				</MapView>

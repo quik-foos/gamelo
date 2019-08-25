@@ -109,6 +109,7 @@ class Explore extends Component {
 
   displayTable = tableID => {
     this.setState({
+      mapView: false,
       view: "table",
       tableID: tableID
     })
@@ -119,7 +120,7 @@ class Explore extends Component {
       return (
         <View style={{ flex: 1 }}>
           <ButtonSmall text="List View" onPress={() => this.setState({ mapView: false })} />
-          <Map tables={this.state.tables} />
+          <Map tables={this.state.tables} displayTable={this.displayTable} />
         </View>
       )
     }
