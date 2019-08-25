@@ -27,7 +27,6 @@ class Explore extends Component {
     try {
       let res = await TableApi.findAll();
       tables = await res.data
-      console.log(tables);
     } catch (e) {
       await
         this.setState({ tables: [] });

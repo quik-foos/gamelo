@@ -39,21 +39,21 @@ class CreateTable extends Component {
 
   addGame = game => {
     this.setState(prevState => {
-      if (prevState.games.map(game => game._id).includes(game._id)) {
+      if (prevState.games.map(g => g._id).includes(game._id)) {
         return;
       } else {
-        return {
-          games: prevState.games.slice(0).push(game)
-        };
+        let gamesOut = prevState.games.slice(0);
+        gamesOut.push(game);
+        return ({games: gamesOut});
       }
     });
   }
 
   removeGame = game => {
     this.setState(prevState => {
-      if (prevState.games.map(game => game._id).includes(game._id)) {
+      if (prevState.games.map(g => g._id).includes(game._id)) {
         let gamesOut = prevState.games.slice(0);
-        gamesOut.splice(gamesOut.map(game => game._id).indexOf(game._id), 1);
+        gamesOut.splice(gamesOut.map(g => g._id).indexOf(game._id), 1);
         return {
           games: gamesOut
         }
@@ -88,12 +88,12 @@ class CreateTable extends Component {
   }
 
   getGames = () => {
-    this.state.games.map(game =>
-      <View>
+    return this.state.games.map((game, id) =>
+      <View key={id}>
         <Text>{game.name}</Text>
         <Button
           text="remove"
-          onPress={this.removeGame(game)}
+          onPress={() => {this.removeGame(game)}}
         />
       </View>
     );
@@ -131,6 +131,7 @@ class CreateTable extends Component {
       <Text>Choose games</Text>
       {this.getGames()}
       <GamePicker
+        value=""
         onSelectGame={this.addGame}
       />
       <Button
