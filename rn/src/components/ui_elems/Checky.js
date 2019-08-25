@@ -6,9 +6,7 @@ export default class Checky extends Component {
     return (
       <Checkbox
         isChecked={this.props.value}
-        onClick={() => {
-          this.props.onClick(!this.props.value);
-        }}
+        onClick={this.props.onClick}
       />
     );
   }

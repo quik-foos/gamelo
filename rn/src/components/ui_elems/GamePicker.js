@@ -19,9 +19,10 @@ export default class GamePicker extends Component {
 
   fetchData = async () => {
     try {
-      const data = await GameApi.findAll();
+      const response = await GameApi.findAll();
+      const data = await response.data;
       this.setState({
-        data: data.data.map(datum => datum.name)
+        data: data
       });
     } catch {
     }
@@ -32,33 +33,25 @@ export default class GamePicker extends Component {
       return [];
     }
     return (this.state.data.filter(datum => {
-      return datum.toLowerCase().replace(/\s/g, '')
+      return datum.name.toLowerCase().replace(/\s/g, '')
         .startsWith(this.state.query.toLowerCase().replace(/\s/g, ''));
     }));
   }
 
-  renderItem = (item, i) => (
-    <TouchableOpacity key={i} onPress={() => {
-      console.log("selected", item)
-      this.props.onSelectGame(item);
-      this.setState({query: item});
-      }}>
-      <Text>{item}</Text>
-    </TouchableOpacity>
-  );
-
   autocomplete = () => {
     return <View style={styles.autocomplete}>
-      {this.autocompleteOptions()}
-    </View>
-  }
-
-  autocompleteOptions = () => {
-    return (this.filterData().map(this.renderItem));
+      {this.filterData().map((datum, key) =>
+        <TouchableOpacity key={key} onPress={() => {
+          this.props.onSelectGame(datum);
+          this.setState({query: item ? item.name: ""});
+        }}>
+          <Text>{datum.name}</Text>
+        </TouchableOpacity>
+      )}
+    </View>;
   }
 
   render() {
-    console.log(this.props);
     return (
       <View>
         <Text>
@@ -66,7 +59,7 @@ export default class GamePicker extends Component {
         </Text>
         <View>
           <TextInput
-            value={this.state.enteringQuery ? this.state.query : this.props.value}
+            value={this.state.enteringQuery ? this.state.query : (this.props.value ? this.props.value.name : null)}
             autoCorrect={false}
             onChangeText={text => {this.setState({query: text});}}
             onFocus={() => {this.setState({
@@ -74,7 +67,7 @@ export default class GamePicker extends Component {
             })}}
             onBlur={() => {this.setState({
               enteringQuery: false,
-              query: this.props.value
+              query: this.props.value ? this.props.value.name : ""
             })}}
           />
           <View>
@@ -96,6 +89,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     right: 0,
     top: 0,
-    zIndex: 1
+    zIndex: 10
   }
 });
