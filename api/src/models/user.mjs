@@ -12,7 +12,6 @@ const UserSchema = new Schema({
   passwordHash: { type: String, required: true, select: false },
   games: [{ type: Schema.ObjectId, ref: 'Game' }],
   elo: [{ type: Schema.ObjectId, ref: 'Elo' }],
-  results: [{ type: Schema.ObjectId, ref: 'Result' }]
 })
 
 UserSchema.plugin(uniqueValidator)
@@ -28,7 +27,6 @@ UserSchema.virtual('password').set(function(value) {
 const deepPopulate = function(next) {
   this.populate('elo')
   this.populate('games')
-  this.populate('results')
   next()
 }
 

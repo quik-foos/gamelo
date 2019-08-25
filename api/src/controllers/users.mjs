@@ -34,8 +34,7 @@ const findAll = (req, res) => {
 const findOne = (req, res) => {
   User.findById(req.params.user_id, (error, user) => {
     if (error) {
-      console.log(error)
-      res.status(403).send(error)
+      res.status(400).send(error)
     } else if (user) {
       res.send(user)
     } else {
@@ -46,6 +45,7 @@ const findOne = (req, res) => {
 
 // Create a user
 const create = (req, res) => {
+  console.log(req.body)
   new User({
     ...req.body
   }).save((error, user) => {
@@ -191,113 +191,6 @@ const removeGame = (req, res) => {
   })
 }
 
-const addResult = (req, res) => {
-  User.findById(req.params.user_id, (error, user) => {
-    if (error) {
-      console.log(error)
-      res.status(403).send(error)
-    } else if (user) {
-      Result.findById(req.params.result_id, (error, result) => {
-        if (error || !result) {
-          console.log(error)
-          res.status(404).send({ message: 'Result not found' })
-        } else {
-          user.results = [...user.results, result._id]
-          user.save((error, user) => {
-            if (error || !user) {
-              res.status(400).send(handleError(error))
-            } else{
-              res.send({
-                message: 'Result added successfully',
-                user: user
-              })
-            }
-          })
-        }
-      })
-    } else {
-      res.status(404).send({ error: 'User not found' })
-    }
-  })
-}
-
-const removeResult = (req, res) => {
-  User.findById(req.params.user_id, (error, user) => {
-    if (error) {
-      console.log(error)
-      res.status(403).send(error)
-    } else if (user) {
-      user.results = user.results.filter(x =>  x._id !== req.params.result_id)
-      user.save((error, user) => {
-        if (error || !user) {
-          res.status(400).send(handleError(error))
-        } else{
-          res.send({
-            message: 'Game added updated successfully',
-            user: user
-          })
-        }
-      })
-    } else {
-      res.status(404).send({ error: 'User not found' })
-    }
-  })
-}
-
-const addElo = (req, res) => {
-  User.findById(req.params.user_id, (error, user) => {
-    if (error) {
-      console.log(error)
-      res.status(403).send(error)
-    } else if (user) {
-      Elo.findById(req.params.elo_id, (error, elo) => {
-        if (error || !elo) {
-          console.log(error)
-          res.status(404).send({ message: 'Elo not found' })
-        } else {
-          user.elo = [...user.elo, elo._id]
-          user.save((error, user) => {
-            if (error || !user) {
-              res.status(400).send(handleError(error))
-            } else{
-              res.send({
-                message: 'Elo added successfully',
-                user: user
-              })
-            }
-          })
-        }
-      })
-    } else {
-      res.status(404).send({ error: 'User not found' })
-    }
-  })
-}
-
-const removeElo = (req, res) => {
-  User.findById(req.params.user_id, (error, user) => {
-    if (error) {
-      console.log(error)
-      res.status(403).send(error)
-    } else if (user) {
-      user.elo = user.results.filter(x =>  x._id !== req.params.elo_id)
-      user.save((error, user) => {
-        if (error || !user) {
-          console.log(error)
-          res.status(400).send(handleError(error))
-        } else{
-          res.send({
-            message: 'Elo removed successfully',
-            user: user
-          })
-        }
-      })
-    } else {
-      res.status(404).send({ error: 'User not found' })
-    }
-  })
-}
-
 export default {
   findAll,
   findOne,
@@ -307,9 +200,5 @@ export default {
   login,
   logout,
   addGame,
-  removeGame,
-  addResult,
-  removeResult,
-  addElo,
-  removeElo
+  removeGame
 }
