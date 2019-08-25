@@ -5,7 +5,6 @@ import StackNavigator from './stack_navigation';
 import { connect } from 'react-redux';
 import { setLocationAction } from '../actions';
 import Geolocation from '@react-native-community/geolocation';
-import Map from '../components/ui_elems/Map'
 
 class Navigator extends Component {
   getNavigator() {
@@ -28,7 +27,7 @@ class Navigator extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: null
+    user: state.user
   };
 };
 

@@ -5,17 +5,17 @@ const crud = getCrudApi(server, 'results');
 
 export default {
   ...crud,
-  addValidation(params) {
+  addValidatedPlayer(params) {
     return server.post(
-      `/results/${params.id}/validations/${params.validatorId}`,
+      `/results/${params.id}/validated_players/${params.validatePlayerId}`,
       {
         params,
       },
     );
   },
-  removePlayer(params) {
+  removeValidatedPlayer(params) {
     return server.delete(
-      `/results/${params.id}/validations/${params.validatorId}`,
+      `/results/${params.id}/validated_players/${params.validatePlayerId}`,
       {
         params,
       },

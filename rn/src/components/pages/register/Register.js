@@ -28,7 +28,7 @@ class Register extends Component {
   signup = async () => {
     this.setState({loading: true})
     try {
-      UserApi.create({
+      await UserApi.create({
         firstName: this.state.firstName,
         lastName: this.state.lastName,
         email: this.state.email,
