@@ -7,7 +7,7 @@ const TableSchema = new Schema({
   games: [{ type: Schema.ObjectId, ref: 'Game', required: true }],
   players: [{ type: Schema.ObjectId, ref: 'User', required: true }],
   joinRequests: [{ type: Schema.ObjectId, ref: 'User', required: true }],
-  startTime: { type: Date, required: true },
+  startTime: { type: Date },
   endTime: { type: Date },
   photoURL: { type: String },
   minPlayers: { type: Number },

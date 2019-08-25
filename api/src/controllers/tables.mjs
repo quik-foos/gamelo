@@ -4,7 +4,9 @@ import User from '../models/user.mjs'
 
 const findAll = (req, res) => {
   let query = {}
+  console.log(req.query)
   if (req.query.host) query.host = req.query.host
+  if (req.query.status) query.host = req.query.status
   if (req.query.player) {
     query.player = { _id: req.query.player }
   }
