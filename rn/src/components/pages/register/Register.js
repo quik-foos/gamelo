@@ -7,6 +7,8 @@ import {
   Alert,
   ToastAndroid,
 } from 'react-native';
+import FontAwesomeIcon5 from 'react-native-vector-icons/FontAwesome5';
+import { Fumi } from 'react-native-textinput-effects';
 import {connect} from 'react-redux';
 import Input from '../../ui_elems/Input';
 import Button from '../../ui_elems/Button';
@@ -28,7 +30,7 @@ class Register extends Component {
   signup = async () => {
     this.setState({loading: true})
     try {
-      await UserApi.create({
+      UserApi.create({
         firstName: this.state.firstName,
         lastName: this.state.lastName,
         email: this.state.email,
@@ -62,38 +64,55 @@ class Register extends Component {
       <View>
         <Text>
         </Text>
-        <Input
-          label="First Name"
-          placeholder="First Name"
-          value={this.state.firstName}
-          secureTextEntry={false}
+        <Fumi
+          label={'First Name'}
+          iconClass={FontAwesomeIcon5}
+          iconName={'dice-one'}
+          iconColor={'#005756'}
+          iconSize={20}
+          iconWidth={40}
+          inputPadding={16}
           onChangeText={firstName => this.setState({firstName})}
         />
-        <Input
-          label="Last Name"
-          placeholder="Last Name"
-          value={this.state.lastName}
-          secureTextEntry={false}
+
+        <Fumi
+          label={'Last Name'}
+          iconClass={FontAwesomeIcon5}
+          iconName={'dice-two'}
+          iconColor={'#005756'}
+          iconSize={20}
+          iconWidth={40}
+          inputPadding={16}
           onChangeText={lastName => this.setState({lastName})}
         />
-        <Input
-          label="Email"
-          placeholder="user@mail.com"
-          value={this.state.email}
-          secureTextEntry={false}
+        <Fumi
+          label={'Email'}
+          iconClass={FontAwesomeIcon5}
+          iconName={'dice-three'}
+          iconColor={'#005756'}
+          iconSize={20}
+          iconWidth={40}
+          inputPadding={16}
           onChangeText={email => this.setState({email})}
         />
-        <Input
-          label="Username"
-          placeholder="username"
-          value={this.state.username}
-          secureTextEntry={false}
+        <Fumi
+          label={'Username'}
+          iconClass={FontAwesomeIcon5}
+          iconName={'dice-four'}
+          iconColor={'#005756'}
+          iconSize={20}
+          iconWidth={40}
+          inputPadding={16}
           onChangeText={username => this.setState({username})}
         />
-        <Input
-          label="Password"
-          placeholder="password"
-          value={this.state.password}
+        <Fumi
+          label={'Password'}
+          iconClass={FontAwesomeIcon5}
+          iconName={'dice-five'}
+          iconColor={'#005756'}
+          iconSize={20}
+          iconWidth={40}
+          inputPadding={16}
           secureTextEntry={true}
           onChangeText={password => this.setState({password})}
         />
