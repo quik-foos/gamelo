@@ -38,7 +38,7 @@ class Table extends Component {
           );
         })}
 
-        <Button text="Request to Join" onPress={this.requestJoin} />
+        <ButtonSmall text="Request to Join" onPress={this.requestJoin} />
         <Text>
           Status: {this.state.status}
           {'\n\n'}
@@ -49,8 +49,8 @@ class Table extends Component {
           return (
             <View key={key}>
               <Text>{request}</Text>
-              <Button text="Accept"/>
-              <Button text="Reject"/>
+              <ButtonSmall text="Accept"/>
+              <ButtonSmall text="Reject"/>
             </View>
           );
         })}

@@ -9,7 +9,9 @@ export default class Explore extends Component {
     super(props);
     this.state = {
       userdata: ["1","2"],
-      tables: []
+      tables: [],
+      view: "nearby",
+      tableID: "nibba",
     };
   }
 
@@ -22,49 +24,67 @@ export default class Explore extends Component {
     console.log(tables);
     } catch (e) {
       await
-      console.log("That")
+
        this.setState({tables: []});
       // ToastAndroid.show(e.response.data.message, 'Failed to fetch tables');
     }
       this.setState({
         tables: tables,
     });
-    console.log(this.state.tables[1].host.firstName)
   };
 
   navigateToTable = async table => {
     this.props.navigation.navigate('Table'), {table: table};
   };
 
-  render() {
-    return (
-      <ScrollView>
-        <View>   
-        {this.state.tables.map((table,key)=>{
-          console.log(table.host.firstName)
-            return(
-              <NearbyTable
-                key={key}
-                players={table.players}
-                games="Settlers of Catan, Monopoly, Scrabble"
-                host={table.host.firstName}
-                distance={table.location.lat}
-                start={table.startTime}
-                {...this.props}
-                onPress={() => {
-                  this.navigateToTable(this.state.data);
-                ;}}
-              />
-            );
-          })}
+  displayNearby = () =>{
+    return (<ScrollView>
+    <View>   
+    {this.state.tables.map((table,key)=>{
+        return(
           <NearbyTable
-            games="Codenames, Telestrations, Connect 4"
-            host="Lucas"
-            distance="1.3km"
-            start="7:30pm"
+            key={key}
+            players={table.players}
+            games="Settlers of Catan, Monopoly, Scrabble"
+            host={table.host.firstName}
+            distance={table.location.lat}
+            start={table.startTime}
+            {...this.props}
+            onPress={() => {
+              this.displayTable(table.host.id);
+            ;}}
           />
-        </View>
-      </ScrollView>
-    );
+        );
+      })}
+      <NearbyTable
+        games="Codenames, Telestrations, Connect 4"
+        host="Lucas"
+        distance="1.3km"
+        start="7:30pm"
+      />
+    </View>
+  </ScrollView>);
+  }
+
+  displayTable = tableID => {
+    this.setState({
+      view: "table",
+      tableID:tableID
+    }) 
+  }
+
+  render() {
+    if(this.state.view=="nearby"){
+      return this.displayNearby();
+    }else {
+      return(
+      <View>
+        <Text>
+        DON'T TOUCH MY SPAGHETT!!
+        </Text>
+      </View>
+      )
+    }
+
   }
 }
