@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import {View, Text, Alert, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import CreateTable from './CreateTable';
 import MakeResult from './MakeResult';
 import Result from './Result';
@@ -129,29 +129,6 @@ class Table extends Component {
     });
   }
 
-<<<<<<< HEAD
-  render() {
-    const { buttonContainer, tableContainer} = styles;
-    return (
-      <View >
-        <View style={tableContainer}>
-          <Text> Fred's Table{'\n'}</Text>
-          <Text>Current Players {this.state.players.length}/{this.state.max}{'\n'}</Text>
-
-          {this.state.players.map((data, key) => {
-            return (
-              <TouchableOpacity key={key} onPress={this.navigateToProfile}>
-                <Text>
-                  {data} {'\n'}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-        <ButtonSmall text="Request to Join" onPress={this.requestJoin} />
-       
-       
-=======
   goToResultView = (resultId) => {
     this.setState({
       view: "viewing-result",
@@ -160,8 +137,8 @@ class Table extends Component {
   }
 
   getNoneView = () => {
-    return <View>
-      <Text>You're not part of any table.</Text>
+    return <View style={styles.noTable}>
+      <Text style={styles.noTableText}>You're not part of any table.</Text>
       <Button
         text="Create a table"
         onPress={this.goToCreateView}
@@ -284,7 +261,6 @@ class Table extends Component {
     <Text>Games Played</Text>
     {this.state.results.map((result, id) => {
       return <TouchableOpacity key={id} onPress={() => {this.goToResultView(result._id)}}>
->>>>>>> 4ac0f29a7c48ffc8ac4edba19a05d83204536930
         <Text>
           {result.game.name}
         </Text>
@@ -292,33 +268,6 @@ class Table extends Component {
     })}
   </Fragment>
 
-<<<<<<< HEAD
-        <Text>Join Requests{'\n'}</Text>
-        {this.state.joinRequests.map((request, key) => {
-          return (
-            <View key={key}>
-              <Text>{request}</Text>
-              <View style ={buttonContainer}>
-              <ButtonSmall style={smol} text="Accept"/>
-              <ButtonSmall text="Reject"/>
-              </View>
-            </View>
-          );
-        })}
-      </View>
-    );
-  }
-}
-const styles = {
-  tableContainer:{
-   margin:10
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-  },
-}
-export default Table;
-=======
 
   render() {
     if (this.state.view === "making-result") {
@@ -351,5 +300,20 @@ const mapStateToProps = state => ({
   id: state.table
 })
 
+const styles = StyleSheet.create({
+  noTable: {
+    borderColor: '#123456',
+    padding:15,
+    marginTop:180,
+    alignSelf: "center"
+  },
+  noTableText:{
+    fontSize:24,
+    paddingBottom:35
+  }
+
+});
+
+
+
 export default connect(mapStateToProps)(Table);
->>>>>>> 4ac0f29a7c48ffc8ac4edba19a05d83204536930

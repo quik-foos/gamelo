@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, StyleSheet,Text, TouchableOpacity} from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 const moment = require('moment');
-
+const styles = StyleSheet.create({
+  timePickerLabel:{
+    marginTop: 10,
+    fontSize:18
+  }
+});
 export default class DateTimeInput extends Component {
   constructor(props){
     super(props)
@@ -10,6 +15,7 @@ export default class DateTimeInput extends Component {
       pickerVisible: false
     };
   }
+  
 
   showPicker = () => {
     this.setState({pickerVisible: true});
@@ -21,7 +27,7 @@ export default class DateTimeInput extends Component {
   render(){
     return (
       <View>
-        <Text>
+        <Text style={styles.timePickerLabel}>
           {this.props.label}
         </Text>
         <TouchableOpacity onPress={this.showPicker}>
