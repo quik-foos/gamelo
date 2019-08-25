@@ -1,6 +1,6 @@
 import Table from '../models/table.mjs'
-import Game from '../models/user.mjs'
-import User from '../models/game.mjs'
+import Game from '../models/game.mjs'
+import User from '../models/user.mjs'
 
 const findAll = (req, res) => {
   let query = {}
