@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  gamelo_api:
+    container_name: gamelo_api
+    image: gamelo/api:latest
+    build:
+      context: ./api
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - '8080:8000'
+    environment:
+      - DATABASE_URL=gamelo_db:27017
+      - PORT=8000
+      - API_URL=40.85.250.29:8000
+    depends_on: 
+      - gamelo_db
+    volumes:
+      - ./api/src:/app/src
+    command:
+      - ./node_modules/nodemon/bin/nodemon.js
+      - "--experimental-modules"
+      - "--legacy-watch"
+      - "--inspect=0.0.0.0"
+      - "./src/app.mjs"
+
+  gamelo_nginx:
+    container_name: gamelo_nginx
+    image: nginx:1.17.3
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /srv/nginx.conf:/etc/nginx/nginx.conf
+      - /srv/conf:/etc/nginx/conf.d
+
+  gamelo_db:
+    container_name: gamelo_db
+    image: mongo:4.0.5
+    ports:
+      - '27017:27017'
+    volumes:
+      - db_volume:/data/db
+    command: mongod --port 27017
+
+volumes:
+  db_volume:
+    external: true
