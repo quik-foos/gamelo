@@ -5,6 +5,7 @@ import Button from '../../ui_elems/Button';
 import DateTimeInput from '../../ui_elems/DateTimeInput';
 import GamePicker from '../../ui_elems/GamePicker';
 import { TableApi } from '../../../api';
+import { connect } from 'react-redux';
 const moment = require('moment');
 
 class CreateTable extends Component {
@@ -71,7 +72,7 @@ class CreateTable extends Component {
       TableApi.create({
         host: this.props.user,
         games: this.state.games.map(game => game._id),
-        players: [],
+        players: [this.props.user],
         joinRequests: [],
         startTime: moment(this.state.dateTime).toDate(),
         maxPlayers: this.state.maxPlayers,
@@ -110,6 +111,7 @@ class CreateTable extends Component {
         onChangeDate={this.setDateTime}
         date={this.state.dateTime}
       />
+      <Text>Max players</Text>
       <Picker
         selectedValue={this.state.maxPlayers}
         onValueChange={(itemValue, itemIndex) =>

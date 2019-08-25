@@ -11,9 +11,11 @@ import { TableApi, ResultApi } from '../../../api';
 class Table extends Component {
   constructor(props) {
     super(props);
+    console.log("table props", props);
     this.state = {
       max: 6,
       status: "Scheduled",
+      id: props.id ? props.id : props.navigation.getParam('id'),
       hostId: "",
       hostName: "",
       players: [],
@@ -26,18 +28,24 @@ class Table extends Component {
       resultIdViewed: 0
         // when view is "viewing-result"
     };
+    this.interval = 0;
   }
 
   componentDidMount() {
+    this.updateData();
+    this.interval = setInterval(this.updateData, 5000);
+  }
+
+  updateData = () => {
     this.fetchTable();
     this.fetchResults();
   }
-
   fetchTable = async () => {
     try {
-      const response = await TableApi.findOne({id: this.props.id});
+      const response = await TableApi.findOne({id: this.state.id});
       const table = await response.data;
       this.setState({
+        status: table.status,
         hostId: table.host._id,
         hostName: table.host.firstName + " " + table.host.lastName,
         players: table.players,
@@ -49,7 +57,7 @@ class Table extends Component {
 
   fetchResults = async () => {
     try {
-      const response = await ResultApi.findAll({table: this.props.id});
+      const response = await ResultApi.findAll({table: this.state.id});
       const results = await response.data;
       this.setState({
         results: results
@@ -84,7 +92,7 @@ class Table extends Component {
 
   startPlaying = () => {
     try {
-      TableApi.update(this.props.id, {status: "In-Progress"});
+      TableApi.update(this.state.id, {status: "In-Progress"});
     } catch {
 
     }
@@ -92,7 +100,7 @@ class Table extends Component {
 
   endSession = () => {
     try {
-      TableApi.update(this.props.id, {status: "Completed"});
+      TableApi.update(this.state.id, {status: "Completed"});
     } catch {
 
     }
@@ -126,7 +134,7 @@ class Table extends Component {
       <Text>You're not part of any table.</Text>
       <Button
         text="Create a table"
-        onPress={this.goToCreateView()}
+        onPress={this.goToCreateView}
       />
     </View>;
   }
@@ -193,7 +201,7 @@ class Table extends Component {
   getCreateResultView = () => {
     return <MakeResult
       cancelAction={this.goToNormalView}
-      tableId={this.props.id}
+      tableId={this.state.id}
     />;
   }
 

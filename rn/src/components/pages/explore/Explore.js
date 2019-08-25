@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StatusBar } from 'react-native';
 import NearbyTable from './NearbyTable';
+import ViewTable from './ViewTable';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { TableApi, UserApi } from '../../../api';
 import ButtonSmall from '../../ui_elems/ButtonSmall';
@@ -37,6 +38,12 @@ class Explore extends Component {
     });
   };
 
+  goToNearbyView = () => {
+    this.setState({
+      view: "nearby"
+    });
+  }
+
   getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     R = 6371; // Radius of the earth in km
     dLat = this.deg2rad(lat2 - lat1);  // deg2rad below
@@ -55,8 +62,8 @@ class Explore extends Component {
     return deg * (Math.PI / 180)
   }
 
-  navigateToTable = async table => {
-    this.props.navigation.navigate('Table'), { table: table };
+  navigateToTable = (id) => {
+    this.props.navigation.navigate('Table', {id: id});
   };
 
   displayNearby = () => {
@@ -83,7 +90,6 @@ class Explore extends Component {
                 {...this.props}
                 onPress={() => {
                   this.displayTable(table._id);
-                  ;
                 }}
               />
             );
@@ -113,15 +119,12 @@ class Explore extends Component {
         return this.displayNearby();
       } else {
         return (
-          <View>
-            <Text>
-              DON'T TOUCH MY SPAGHETT!!
-          </Text>
-          <Text>
-            Also my table id is: {this.state.tableID}
-          </Text>
-          </View>
-        )
+          <ViewTable
+            id={this.state.tableID}
+            return={this.goToNearbyView}
+            navigateToTable={this.navigateToTable}
+          />
+        );
       }
     }
   }

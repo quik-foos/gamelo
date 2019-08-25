@@ -22,7 +22,7 @@ export default class GamePicker extends Component {
       const response = await GameApi.findAll();
       const data = await response.data;
       this.setState({
-        data: data.data
+        data: data
       });
     } catch {
     }
@@ -38,27 +38,20 @@ export default class GamePicker extends Component {
     }));
   }
 
-  renderItem = (item, i) => (
-    <TouchableOpacity key={i} onPress={() => {
-      this.props.onSelectGame(item);
-      this.setState({query: item.name});
-      }}>
-      <Text>{item.name}</Text>
-    </TouchableOpacity>
-  );
-
   autocomplete = () => {
     return <View style={styles.autocomplete}>
-      {this.autocompleteOptions()}
-    </View>
-  }
-
-  autocompleteOptions = () => {
-    return (this.filterData().map(this.renderItem));
+      {this.filterData().map((datum, key) =>
+        <TouchableOpacity key={key} onPress={() => {
+          this.props.onSelectGame(datum);
+          this.setState({query: item ? item.name: ""});
+        }}>
+          <Text>{datum.name}</Text>
+        </TouchableOpacity>
+      )}
+    </View>;
   }
 
   render() {
-    console.log(this.props);
     return (
       <View>
         <Text>
@@ -66,7 +59,7 @@ export default class GamePicker extends Component {
         </Text>
         <View>
           <TextInput
-            value={this.state.enteringQuery ? this.state.query : this.props.value.name}
+            value={this.state.enteringQuery ? this.state.query : (this.props.value ? this.props.value.name : null)}
             autoCorrect={false}
             onChangeText={text => {this.setState({query: text});}}
             onFocus={() => {this.setState({
@@ -74,7 +67,7 @@ export default class GamePicker extends Component {
             })}}
             onBlur={() => {this.setState({
               enteringQuery: false,
-              query: this.props.value
+              query: this.props.value ? this.props.value.name : ""
             })}}
           />
           <View>
@@ -96,6 +89,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     right: 0,
     top: 0,
-    zIndex: 1
+    zIndex: 10
   }
 });
