@@ -4,6 +4,7 @@ import Button from '../../ui_elems/Button';
 import ButtonSmall from '../../ui_elems/ButtonSmall';
 import { connect } from 'react-redux';
 import { TableApi } from '../../../api';
+import {setTableAction} from '../../../actions'
 
 class ViewTable extends Component {
   constructor(props) {
@@ -32,14 +33,6 @@ class ViewTable extends Component {
         players: table.players,
       });
     } catch {
-    }
-  }
-  acceptJoinRequest = (joinRequestId) => {
-    try {
-      TableApi.removeJoinRequest({userId: joinRequestId});
-      TableApi.addPlayer({userId: joinRequestId});
-    } catch {
-
     }
   }
 
@@ -80,9 +73,12 @@ class ViewTable extends Component {
   createJoinRequest = async () => {
     try {
       await TableApi.addJoinRequest({id: this.props.id, userId: this.props.user});
-      this.props.navigateToTable(this.props.id);
-    } catch {
-
+      // console.log("2");
+      await this.props.dispatch(setTableAction(this.props.id));
+      // console.log("3");
+      this.props.navigateToTable();
+    } catch (e) {
+      console.log(e);
     }
   }
 

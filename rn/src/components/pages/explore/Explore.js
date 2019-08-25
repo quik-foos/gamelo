@@ -62,8 +62,8 @@ class Explore extends Component {
     return deg * (Math.PI / 180)
   }
 
-  navigateToTable = (id) => {
-    this.props.navigation.navigate('Table', {id: id});
+  navigateToTable = () => {
+    this.props.navigation.navigate('Table');
   };
 
   displayNearby = () => {

@@ -11,11 +11,9 @@ import { TableApi, ResultApi } from '../../../api';
 class Table extends Component {
   constructor(props) {
     super(props);
-    console.log("table props", props);
     this.state = {
       max: 6,
       status: "Scheduled",
-      id: props.id ? props.id : props.navigation.getParam('id'),
       hostId: "",
       hostName: "",
       players: [],
@@ -33,16 +31,17 @@ class Table extends Component {
 
   componentDidMount() {
     this.updateData();
-    this.interval = setInterval(this.updateData, 5000);
+    this.interval = setInterval(this.updateData, 3000);
   }
 
   updateData = () => {
     this.fetchTable();
     this.fetchResults();
   }
+
   fetchTable = async () => {
     try {
-      const response = await TableApi.findOne({id: this.state.id});
+      const response = await TableApi.findOne({id: this.props.id});
       const table = await response.data;
       this.setState({
         status: table.status,
@@ -57,7 +56,7 @@ class Table extends Component {
 
   fetchResults = async () => {
     try {
-      const response = await ResultApi.findAll({table: this.state.id});
+      const response = await ResultApi.findAll({table: this.props.id});
       const results = await response.data;
       this.setState({
         results: results
@@ -66,16 +65,27 @@ class Table extends Component {
     }
   }
 
+  cancelJoinRequest = async () => {
+    console.log("pressed");
+    try {
+      console.log("cancelling", this.props.id);
+      await TableApi.removeJoinRequest({id: this.props.id, userId: this.props.user});
+    } catch (e) {
+      console.log(e);
+      console.log(this.props);
+    }
+  }
+
   kickPlayer = (playerId) => {
     try {
-      TableApi.removePlayer({userId: playerId});
+      TableApi.removePlayer({id: this.props.id, userId: playerId});
     } catch {
     }
   }
 
   acceptJoinRequest = (joinRequestId) => {
     try {
-      TableApi.removeJoinRequest({userId: joinRequestId});
+      TableApi.removeJoinRequest({id: this.props.id, userId: joinRequestId});
       TableApi.addPlayer({userId: joinRequestId});
     } catch {
 
@@ -84,7 +94,7 @@ class Table extends Component {
 
   rejectJoinRequest = (joinRequestId) => {
     try {
-      TableApi.removeJoinRequest({userId: joinRequestId});
+      TableApi.removeJoinRequest({id: this.props.id, userId: joinRequestId});
     } catch {
 
     }
@@ -92,7 +102,7 @@ class Table extends Component {
 
   startPlaying = () => {
     try {
-      TableApi.update(this.state.id, {status: "In-Progress"});
+      TableApi.update(this.props.id, {status: "In-Progress"});
     } catch {
 
     }
@@ -100,7 +110,7 @@ class Table extends Component {
 
   endSession = () => {
     try {
-      TableApi.update(this.state.id, {status: "Completed"});
+      TableApi.update(this.props.id, {status: "Completed"});
     } catch {
 
     }
@@ -144,6 +154,10 @@ class Table extends Component {
       <Text>{this.state.hostName}'s Table</Text>
       {this.getCurrentPlayers()}
       <Text>Waiting for host to accept&hellip;</Text>
+      <Button
+        text="Cancel request"
+        onPress={this.cancelJoinRequest}
+      />
     </View>;
   }
 
@@ -160,7 +174,7 @@ class Table extends Component {
       {this.state.status === "In-Progress" ||
         <Button
           text="Record game result"
-          onPress={this.createResult}
+          onPress={() => {console.log("lskdjflsk"); this.createResult();}}
         />
       }
     </View>;
@@ -201,7 +215,7 @@ class Table extends Component {
   getCreateResultView = () => {
     return <MakeResult
       cancelAction={this.goToNormalView}
-      tableId={this.state.id}
+      tableId={this.props.id}
     />;
   }
 
@@ -276,7 +290,7 @@ class Table extends Component {
       // This is a guest
       return this.getGuestView();
     }
-    if (this.state.joinRequests.includes(this.props.user)) {
+    if (this.state.joinRequests.map(player => player._id).includes(this.props.user)) {
       // User has an active join request
       return this.getWaitingView();
     }
@@ -285,7 +299,8 @@ class Table extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  id: state.table
 })
 
 export default connect(mapStateToProps)(Table);
