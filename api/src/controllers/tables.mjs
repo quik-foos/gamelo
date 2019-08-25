@@ -128,7 +128,7 @@ const removeGame = (req, res) => {
       console.log(error)
       res.status(403).send(error)
     } else if (table) {
-      table.games = table.games.filter(x =>  x._id !== req.params.game_id)
+      table.games = table.games.filter(x =>  x._id != req.params.game_id)
       table.save((error, table) => {
         if (error || !table) {
           res.status(400).send({ message: 'User not found' })
@@ -181,7 +181,7 @@ const removePlayer = (req, res) => {
       console.log(error)
       res.status(403).send(error)
     } else if (table) {
-      table.users = table.users.filter(x =>  x._id !== req.params.user_id)
+      table.users = table.users.filter(x =>  x._id != req.params.user_id)
       table.save((error, table) => {
         if (error || !table) {
           res.status(400).send({ message: 'User not found' })
@@ -234,7 +234,7 @@ const removeJoinRequest = (req, res) => {
       console.log(error)
       res.status(403).send(error)
     } else if (table) {
-      table.joinRequests = table.joinRequests.filter(x =>  x._id !== req.params.user_id)
+      table.joinRequests = table.joinRequests.filter(x =>  x._id != req.params.user_id)
       table.save((error, table) => {
         if (error || !table) {
           res.status(400).send({ message: 'User not found' })

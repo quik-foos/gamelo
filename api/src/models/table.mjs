@@ -9,6 +9,7 @@ const TableSchema = new Schema({
   joinRequests: [{ type: Schema.ObjectId, ref: 'User', required: true }],
   startTime: { type: Date, required: true },
   endTime: { type: Date },
+  photoURL: { type: String },
   minPlayers: { type: Number },
   maxPlayers: { type: Number },
   location: {

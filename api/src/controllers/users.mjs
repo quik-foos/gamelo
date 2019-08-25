@@ -45,7 +45,6 @@ const findOne = (req, res) => {
 
 // Create a user
 const create = (req, res) => {
-  console.log(req.body)
   new User({
     ...req.body
   }).save((error, user) => {
@@ -174,7 +173,7 @@ const removeGame = (req, res) => {
       console.log(error)
       res.status(403).send(error)
     } else if (user) {
-      user.games = user.games.filter(x =>  x._id !== req.params.game_id)
+      user.games = user.games.filter(x =>  x._id != req.params.game_id)
       user.save((error, user) => {
         if (error || !user) {
           res.status(400).send(handleError(error))
