@@ -9,6 +9,7 @@ import GamePicker from '../../ui_elems/GamePicker';
 import { TableApi } from '../../../api';
 import { connect } from 'react-redux';
 import RNGooglePlaces from 'react-native-google-places';
+import FontAwesomeIcon5 from 'react-native-vector-icons/FontAwesome5';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
@@ -18,7 +19,8 @@ class CreateTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: "",
+      latitude: '',
+      longitude: '',
       dateTime: "",
       maxPlayers: 4,
       games: []
@@ -29,7 +31,8 @@ class CreateTable extends Component {
     RNGooglePlaces.openAutocompleteModal()
     .then((place) => {
       this.setState({
-        location: { lat: place.location.latitude, lng: place.location.longitude }
+        latitude: place.location.latitude,
+        longitude: place.location.longitude
       })
 		// place represents user's selection from the
 		// suggestions and it is a simplified Google Place object.
@@ -81,10 +84,6 @@ class CreateTable extends Component {
     })
   }
 
-  getLatLong = (address) => {
-    return {lat: 0.1, lng: 0.1};
-  }
-
   createTable = () => {
     try {
       TableApi.create({
@@ -121,46 +120,51 @@ class CreateTable extends Component {
     return <ScrollView>
       <View style={styles.container}>
         <Text style={styles.titleText}>Create a Table</Text>
-        <TouchableOpacity onPress={() => this.showLocationPicker()}>
-          <Text>Location</Text>
-        </TouchableOpacity>
         <Fumi
-            label={'Location'}
-            iconClass={Entypo}
-            iconName={'location-pin'}
-            iconColor={'#005756'}
-            iconSize={20}
-            iconWidth={40}
-            inputPadding={16}
-            onChangeText={location => this.setState({location})}
+          label={'Location'}
+          iconClass={FontAwesomeIcon5}
+          iconName={'dice-one'}
+          iconColor={'#005756'}
+          iconSize={20}
+          iconWidth={40}
+          inputPadding={16}
+          value={`${this.state.latitude}${this.state.longitude ? ',' : ''} ${this.state.longitude}`}
+          onFocus={() => this.showLocationPicker()}
+        />
+        <View height={90}>
+          <Text>Date and Time</Text>
+          <DateTimeInput
+            label="Date and time"
+            onChangeDate={this.setDateTime}
+            date={this.state.dateTime}
           />
-        <DateTimeInput
-          label="Date and time"
-          onChangeDate={this.setDateTime}
-          date={this.state.dateTime}
-        />
-        <Text>Max players</Text>
-        <Picker
-          selectedValue={this.state.maxPlayers}
-          onValueChange={(itemValue, itemIndex) =>
-            this.setState({maxPlayers: itemValue})
-          }>
-          <Picker.Item label="1" value="1" />
-          <Picker.Item label="2" value="2" />
-          <Picker.Item label="3" value="3" />
-          <Picker.Item label="4" value="4" />
-          <Picker.Item label="5" value="5" />
-          <Picker.Item label="6" value="6" />
-          <Picker.Item label="7" value="7" />
-          <Picker.Item label="8" value="8" />
-          <Picker.Item label="9" value="9" />
-          <Picker.Item label="10" value="10" />
-        </Picker>
-        <Text>Choose games</Text>
-        {this.getGames()}
-        <GamePicker
-          onSelectGame={this.addGame}
-        />
+        </View>
+        <View height={90}>
+          <Text>Max players</Text>
+          <Picker
+            selectedValue={this.state.maxPlayers}
+            onValueChange={(itemValue, itemIndex) =>
+              this.setState({maxPlayers: itemValue})
+            }>
+            <Picker.Item label="1" value="1" />
+            <Picker.Item label="2" value="2" />
+            <Picker.Item label="3" value="3" />
+            <Picker.Item label="4" value="4" />
+            <Picker.Item label="5" value="5" />
+            <Picker.Item label="6" value="6" />
+            <Picker.Item label="7" value="7" />
+            <Picker.Item label="8" value="8" />
+            <Picker.Item label="9" value="9" />
+            <Picker.Item label="10" value="10" />
+          </Picker>
+        </View>
+        <View heigth={90}>
+          <Text>Choose games</Text>
+          {this.getGames()}
+          <GamePicker
+            onSelectGame={this.addGame}
+          />
+        </View>
       </View>
         <Button
           text="Cancel"

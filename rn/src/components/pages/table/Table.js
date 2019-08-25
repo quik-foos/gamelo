@@ -38,7 +38,7 @@ class Table extends Component {
   }
 
   updateData = () => {
-    this.getRelevantTable();
+    this.fetchTable();
     this.fetchResults();
   }
 
