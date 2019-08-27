@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     alignSelf: 'auto'
   },
   summaryGameName:{
-    fontSize: 32
+    fontSize: 25
   },
   eloGame:{
 

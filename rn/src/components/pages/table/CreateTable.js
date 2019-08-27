@@ -4,6 +4,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { Fumi } from 'react-native-textinput-effects';
 import Input from '../../ui_elems/Input';
 import Button from '../../ui_elems/Button';
+import ButtonSmall from '../../ui_elems/ButtonSmall';
 import DateTimeInput from '../../ui_elems/DateTimeInput';
 import GamePicker from '../../ui_elems/GamePicker';
 import { TableApi } from '../../../api';
@@ -21,7 +22,8 @@ class CreateTable extends Component {
     this.state = {
       latitude: '',
       longitude: '',
-      dateTime: "",
+      startDateTime: "",
+      endDateTime: "",
       maxPlayers: 4,
       games: []
     };
@@ -29,15 +31,15 @@ class CreateTable extends Component {
 
   showLocationPicker = () => {
     RNGooglePlaces.openAutocompleteModal()
-    .then((place) => {
-      this.setState({
-        latitude: place.location.latitude,
-        longitude: place.location.longitude
+      .then((place) => {
+        this.setState({
+          latitude: place.location.latitude,
+          longitude: place.location.longitude
+        })
+        // place represents user's selection from the
+        // suggestions and it is a simplified Google Place object.
       })
-		// place represents user's selection from the
-		// suggestions and it is a simplified Google Place object.
-    })
-    .catch(error => console.log(error.message));  // error is a Javascript Error object
+      .catch(error => console.log(error.message));  // error is a Javascript Error object
   }
 
   setLocation = location => {
@@ -46,9 +48,17 @@ class CreateTable extends Component {
     });
   }
 
-  setDateTime = dateTime => {
+  setStartDateTime = dateTime => {
+    formatted = `${dateTime}`.split("").slice(0,21).join('')
     this.setState({
-      dateTime: dateTime
+      startDateTime: formatted
+    });
+  }
+
+  setEndDateTime = dateTime => {
+    formatted = `${dateTime}`.split("").slice(0,21).join('')
+    this.setState({
+      endDateTime: dateTime
     });
   }
 
@@ -65,7 +75,7 @@ class CreateTable extends Component {
       } else {
         let gamesOut = prevState.games.slice(0);
         gamesOut.push(game);
-        return ({games: gamesOut});
+        return ({ games: gamesOut });
       }
     });
   }
@@ -85,19 +95,29 @@ class CreateTable extends Component {
   }
 
   createTable = () => {
+    console.log("Trying to create a table with startTime: ")
+    console.log(this.state.startDateTime)
     try {
       TableApi.create({
         host: this.props.user,
-        games: this.state.games.map(game => game._id),
+        // games: this.state.games.map(game => game._id),
         players: [this.props.user],
         joinRequests: [],
-        startTime: moment(this.state.dateTime).toDate(),
+        photoURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc1Ctdj6bnwNtgh1VB8hdGCD672Kewkxt9k_yrQBqokgEqpILkvg",
+        startTime: this.state.startDateTime,
+        endTime: this.state.endDateTime,
         maxPlayers: this.state.maxPlayers,
-        location: getLatLong(),
+        location: 
+        {
+          lng: this.state.longitude,
+          lat: this.state.latitude
+        },
         status: "Scheduled"
       });
-    } catch {
+    } catch(e) {
+      console.log(e)
     }
+    this.cancelTable()
   }
 
   cancelTable = () => {
@@ -108,9 +128,9 @@ class CreateTable extends Component {
     return this.state.games.map((game, id) =>
       <View key={id}>
         <Text>{game.name}</Text>
-        <Button
+        <ButtonSmall
           text="remove"
-          onPress={() => {this.removeGame(game)}}
+          onPress={() => { this.removeGame(game) }}
         />
       </View>
     );
@@ -132,19 +152,29 @@ class CreateTable extends Component {
           onFocus={() => this.showLocationPicker()}
         />
         <View height={90}>
-          <Text>Date and Time</Text>
+          <Text></Text>
           <DateTimeInput
-            label="Date and time"
-            onChangeDate={this.setDateTime}
-            date={this.state.dateTime}
+            label="Start Date and time"
+            onChangeDate={this.setStartDateTime}
+            date={this.state.startDateTime}
           />
+          <Text></Text>
+        </View>
+        <View height={90}>
+          <Text>End Date and Time</Text>
+          <DateTimeInput
+            label="End Date and time"
+            onChangeDate={this.setEndDateTime}
+            date={this.state.endDateTime}
+          />
+          <Text></Text>
         </View>
         <View height={90}>
           <Text>Max players</Text>
           <Picker
             selectedValue={this.state.maxPlayers}
             onValueChange={(itemValue, itemIndex) =>
-              this.setState({maxPlayers: itemValue})
+              this.setState({ maxPlayers: itemValue })
             }>
             <Picker.Item label="1" value="1" />
             <Picker.Item label="2" value="2" />
@@ -166,14 +196,14 @@ class CreateTable extends Component {
           />
         </View>
       </View>
-        <Button
-          text="Cancel"
-          onPress={this.cancelTable}
-        />
-        <Button
-          text="Create"
-          onPress={this.createTable}
-        />
+      <ButtonSmall
+        text="Cancel"
+        onPress={this.cancelTable}
+      />
+      <ButtonSmall
+        text="Create"
+        onPress={this.createTable}
+      />
     </ScrollView>;
   }
 }
@@ -184,12 +214,12 @@ const mapStateToProps = state => ({
 
 const styles = StyleSheet.create({
   container: {
-    padding:15,
-    margin:15,
+    padding: 15,
+    margin: 15,
   },
-  titleText:{
+  titleText: {
     fontSize: 32,
-    marginBottom:15
+    marginBottom: 15
   }
 });
 

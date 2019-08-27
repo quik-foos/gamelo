@@ -57,6 +57,7 @@ export default class NearbyTable extends Component {
                 }}>
                   <Icon style={{marginLeft: 10, marginRight: 20}} name="ios-time" color='black' size={24} />
                   <Text style={{ marginTop: 10 }}>
+                    {/* {this.props.start.split(" ").slice(0,4).join(' ')}{'\n'} at {this.props.start.split(" ")[4]} {'\n'} */}
                     {this.props.start.split('T')[0]}{'\n'} at {this.props.start.split('T')[1].split('.000')[0]} {'\n'}
                   </Text>
                 </View>

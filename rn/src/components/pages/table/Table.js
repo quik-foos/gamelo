@@ -1,5 +1,5 @@
-import React, {Component, Fragment} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, { Component, Fragment } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import CreateTable from './CreateTable';
 import MakeResult from './MakeResult';
 import Result from './Result';
@@ -16,15 +16,16 @@ class Table extends Component {
       status: "Scheduled",
       hostId: "",
       hostName: "",
+      id: "",
       players: [],
       joinRequests: [],
       results: [],
       view: "normal", // for a host's view, guest's view, etc.
-        // "create" for creating a table
-        // "making-result" for creating a game record
-        // "viewing-result" for viewing and accepting / rejecting a game record
+      // "create" for creating a table
+      // "making-result" for creating a game record
+      // "viewing-result" for viewing and accepting / rejecting a game record
       resultIdViewed: 0
-        // when view is "viewing-result"
+      // when view is "viewing-result"
     };
     this.interval = 0;
   }
@@ -44,7 +45,7 @@ class Table extends Component {
 
   getRelevantTable = async () => {
     try {
-      let response = await TableApi.findAll({host: this.props.user});
+      let response = await TableApi.findAll({ host: this.props.user });
       let tables = await response.data;
       let table = {}
       console.log(tables)
@@ -59,8 +60,8 @@ class Table extends Component {
           joinRequests: table.joinRequests
         })
         return
-      } 
-      response = await TableApi.findAll({players: this.props.user});
+      }
+      response = await TableApi.findAll({ players: this.props.user });
       tables = await response.data;
       console.log(tables)
       if (tables.length > 0) {
@@ -75,7 +76,7 @@ class Table extends Component {
         })
         return
       }
-      response = await TableApi.findAll({joinRequests: this.props.user});
+      response = await TableApi.findAll({ joinRequests: this.props.user });
       tables = await response.data;
       console.log(tables)
       if (tables.length > 0) {
@@ -97,7 +98,7 @@ class Table extends Component {
 
   fetchTable = async () => {
     try {
-      const response = await TableApi.findOne({id: this.state.id});
+      const response = await TableApi.findOne({ id: this.state.id });
       const table = await response.data;
       this.setState({
         status: table.status,
@@ -112,7 +113,7 @@ class Table extends Component {
 
   fetchResults = async () => {
     try {
-      const response = await ResultApi.findAll({table: this.props.id});
+      const response = await ResultApi.findAll({ table: this.props.id });
       const results = await response.data;
       this.setState({
         results: results
@@ -123,7 +124,7 @@ class Table extends Component {
 
   cancelJoinRequest = async () => {
     try {
-      await TableApi.removeJoinRequest({id: this.props.id, userId: this.props.user});
+      await TableApi.removeJoinRequest({ id: this.props.id, userId: this.props.user });
     } catch (e) {
       console.log(e);
     }
@@ -131,15 +132,15 @@ class Table extends Component {
 
   kickPlayer = (playerId) => {
     try {
-      TableApi.removePlayer({id: this.props.id, userId: playerId});
+      TableApi.removePlayer({ id: this.props.id, userId: playerId });
     } catch {
     }
   }
 
   acceptJoinRequest = (joinRequestId) => {
     try {
-      TableApi.removeJoinRequest({id: this.props.id, userId: joinRequestId});
-      TableApi.addPlayer({userId: joinRequestId});
+      TableApi.removeJoinRequest({ id: this.props.id, userId: joinRequestId });
+      TableApi.addPlayer({ userId: joinRequestId });
     } catch {
 
     }
@@ -147,7 +148,7 @@ class Table extends Component {
 
   rejectJoinRequest = (joinRequestId) => {
     try {
-      TableApi.removeJoinRequest({id: this.props.id, userId: joinRequestId});
+      TableApi.removeJoinRequest({ id: this.props.id, userId: joinRequestId });
     } catch {
 
     }
@@ -155,7 +156,7 @@ class Table extends Component {
 
   startPlaying = () => {
     try {
-      TableApi.update({id: this.props.id, status: "In-Progress"});
+      TableApi.update({ id: this.props.id, status: "In-Progress" });
     } catch {
 
     }
@@ -163,16 +164,16 @@ class Table extends Component {
 
   endSession = () => {
     try {
-      TableApi.update({id: this.props.id, status: "Completed"});
+      TableApi.update({ id: this.props.id, status: "Completed" });
     } catch {
 
     }
   }
 
   navigateToProfile = (profile_id) => {
-    this.props.navigation.navigate('Profile', {id: profile_id});
+    this.props.navigation.navigate('Profile', { id: profile_id });
   };
-  
+
   goToNormalView = () => {
     this.setState({
       view: "normal"
@@ -201,7 +202,7 @@ class Table extends Component {
   getNoneView = () => {
     return <View style={styles.noTable}>
       <Text style={styles.noTableText}>You're not part of any table.</Text>
-      <Button
+      <ButtonSmall
         text="Create a table"
         onPress={this.goToCreateView}
       />
@@ -242,6 +243,7 @@ class Table extends Component {
   getHostView = () => {
     return <View>
       <Text>Your Table</Text>
+      <Text></Text>
       {this.getCurrentPlayers()}
       {this.state.status === "Scheduled" &&
         <Button
@@ -264,11 +266,21 @@ class Table extends Component {
           onPress={this.goToCreateResultView}
         />
       }
+      <Button
+        text="Cancel Table"
+        onPress={this.cancelTable}
+      />
     </View>;
   }
 
+  cancelTable = () => {
+    console.log("TRYING TO DELETE:")
+    console.log(this.state.id)
+    TableApi.destroy(this.state.id)
+  }
+
   getCreateView = () => {
-    return <CreateTable cancelAction={this.goToNormalView}/>;
+    return <CreateTable cancelAction={this.goToNormalView} />;
   }
 
   getCreateResultView = () => {
@@ -288,13 +300,13 @@ class Table extends Component {
   getCurrentPlayers = () => <Fragment>
     <Text>Current Players {this.state.players.length} / {this.state.max} </Text>
     {this.state.players.map((player, key) => {
-      return <TouchableOpacity key={key} onPress={() => {this.navigateToProfile(player._id)}}>
+      return <TouchableOpacity key={key} onPress={() => { this.navigateToProfile(player._id) }}>
         <View>
           <Text>{player.username}</Text>
           {(this.props.user === this.state.hostId) &&
             <ButtonSmall
               text="Kick player"
-              onPress={() => {this.kickPlayer(player._id)}}
+              onPress={() => { this.kickPlayer(player._id) }}
             />
           }
         </View>
@@ -309,20 +321,20 @@ class Table extends Component {
         {joinRequest.username}
         <ButtonSmall
           text="Accept"
-          onPress={() => {this.acceptJoinRequest(joinRequest._id)}}
+          onPress={() => { this.acceptJoinRequest(joinRequest._id) }}
         />
         <ButtonSmall
           text="Reject"
-          onPress={() => {this.rejectJoinRequest(joinRequest._id)}}
+          onPress={() => { this.rejectJoinRequest(joinRequest._id) }}
         />
       </View>;
     })}
   </Fragment>;
-  
+
   getResults = () => <Fragment>
     <Text>Games Played</Text>
     {this.state.results.map((result, id) => {
-      return <TouchableOpacity key={id} onPress={() => {this.goToResultView(result._id)}}>
+      return <TouchableOpacity key={id} onPress={() => { this.goToResultView(result._id) }}>
         <Text>
           {result.game.name}
         </Text>
@@ -365,13 +377,13 @@ const mapStateToProps = state => ({
 const styles = StyleSheet.create({
   noTable: {
     borderColor: '#123456',
-    padding:15,
-    marginTop:180,
+    padding: 15,
+    marginTop: 180,
     alignSelf: "center"
   },
-  noTableText:{
-    fontSize:24,
-    paddingBottom:35
+  noTableText: {
+    fontSize: 24,
+    paddingBottom: 35
   }
 
 });

@@ -28,7 +28,7 @@ export default class GamePicker extends Component {
 
   getPickerItems = () => {
     return this.state.data.map(datum =>
-      <Picker.Item label={datum.name} value={datum._id}/>
+      <Picker.Item key={datum._id} label={datum.name} value={datum._id}/>
     );
   }
 

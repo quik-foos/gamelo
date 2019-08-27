@@ -25,7 +25,7 @@ class Home extends Component {
   render() {
     return (
       <View style={styles.mainView}>
-        <StatusBar backgroundColor="#055" barStyle="light-content" />
+        <StatusBar backgroundColor={BACKGROUND_COLOR} barStyle="light-content" />
         <Logo />
         <View style={styles.spacer} />
         <Button

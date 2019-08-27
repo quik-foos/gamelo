@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StatusBar } from 'react-native';
+import { View, Text, StatusBar, ScrollView, RefreshControl } from 'react-native';
 import NearbyTable from './NearbyTable';
 import ViewTable from './ViewTable';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { TableApi, UserApi } from '../../../api';
 import ButtonSmall from '../../ui_elems/ButtonSmall';
 import Map from '../../ui_elems/Map';
@@ -17,11 +16,16 @@ class Explore extends Component {
       tables: [],
       view: "nearby",
       tableID: "nibba",
-      mapView: false
+      mapView: false,
+      refreshing: false
     };
   }
 
   componentDidMount = async () => {
+    this.fetchData()
+  };
+
+  fetchData = async () => {
     let tables = [];
     let users = [];
     try {
@@ -35,7 +39,14 @@ class Explore extends Component {
     this.setState({
       tables: tables,
     });
-  };
+  }
+
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    this.fetchData().then(() => {
+      this.setState({ refreshing: false });
+    });
+  }
 
   goToNearbyView = () => {
     this.setState({
@@ -67,12 +78,23 @@ class Explore extends Component {
 
   displayNearby = () => {
     return (
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+      >
         <View>
           <StatusBar backgroundColor="#055" barStyle="light-content" />
           <ButtonSmall text="Map View" onPress={() => this.setState({ mapView: true })} />
 
           {this.state.tables.map((table, key) => {
+            if (table.host.firstName == "Donald") {
+              console.log("START TIME ISSSS: ")
+              console.log(table.startTime)
+            }
             return (
               <NearbyTable
                 key={key}
@@ -81,11 +103,11 @@ class Explore extends Component {
                 host={table.host.firstName}
                 photoURL={table.photoURL}
                 distance={this.getDistanceFromLatLonInKm(
-                  this.props.latitude, 
-                  this.props.longitude, 
-                  table.location.lat, 
+                  this.props.latitude,
+                  this.props.longitude,
+                  table.location.lat,
                   table.location.lng
-                  )}
+                )}
                 start={table.startTime}
                 {...this.props}
                 onPress={() => {
@@ -94,9 +116,10 @@ class Explore extends Component {
               />
             );
           }).sort((a, b) => a.props.distance - b.props.distance)
-        }
+          }
         </View>
-      </ScrollView>);
+      </ScrollView >
+    );
   }
 
   displayTable = tableID => {

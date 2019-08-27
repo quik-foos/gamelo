@@ -1,19 +1,20 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   ActivityIndicator,
   Text,
   View,
   TextInput,
+  StatusBar,
   Alert,
   ToastAndroid,
 } from 'react-native';
 import FontAwesomeIcon5 from 'react-native-vector-icons/FontAwesome5';
 import { Fumi } from 'react-native-textinput-effects';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Input from '../../ui_elems/Input';
 import Button from '../../ui_elems/Button';
-import {UserApi} from '../../../api';
-import {loginAction} from '../../../actions';
+import { UserApi } from '../../../api';
+import { loginAction } from '../../../actions';
 import { BUTTON_COLOR } from '../../../constants';
 
 
@@ -28,7 +29,7 @@ class Register extends Component {
   };
 
   signup = async () => {
-    this.setState({loading: true})
+    this.setState({ loading: true })
     try {
       await UserApi.create({
         firstName: this.state.firstName,
@@ -42,10 +43,10 @@ class Register extends Component {
         password: this.state.password,
       });
       let user = await res.data.user._id
-      await this.setState({loading: false});
+      await this.setState({ loading: false });
       await this.props.dispatch(loginAction(user));
     } catch (e) {
-      await this.setState({loading: false});
+      await this.setState({ loading: false });
       ToastAndroid.show(e.response.data.message, ToastAndroid.SHORT);
     }
   };
@@ -53,7 +54,7 @@ class Register extends Component {
   getLoader = () => {
     if (this.state.loading)
       return (
-        <View style={{marginTop: 50}}>
+        <View style={{ marginTop: 50 }}>
           <ActivityIndicator size="large" color={BUTTON_COLOR} />
         </View>
       )
@@ -62,6 +63,7 @@ class Register extends Component {
   render() {
     return (
       <View>
+        <StatusBar backgroundColor="#055" barStyle="light-content" />
         <Text>
         </Text>
         <Fumi
@@ -72,7 +74,7 @@ class Register extends Component {
           iconSize={20}
           iconWidth={40}
           inputPadding={16}
-          onChangeText={firstName => this.setState({firstName})}
+          onChangeText={firstName => this.setState({ firstName })}
         />
 
         <Fumi
@@ -83,7 +85,7 @@ class Register extends Component {
           iconSize={20}
           iconWidth={40}
           inputPadding={16}
-          onChangeText={lastName => this.setState({lastName})}
+          onChangeText={lastName => this.setState({ lastName })}
         />
         <Fumi
           label={'Email'}
@@ -93,7 +95,7 @@ class Register extends Component {
           iconSize={20}
           iconWidth={40}
           inputPadding={16}
-          onChangeText={email => this.setState({email})}
+          onChangeText={email => this.setState({ email })}
         />
         <Fumi
           label={'Username'}
@@ -103,7 +105,7 @@ class Register extends Component {
           iconSize={20}
           iconWidth={40}
           inputPadding={16}
-          onChangeText={username => this.setState({username})}
+          onChangeText={username => this.setState({ username })}
         />
         <Fumi
           label={'Password'}
@@ -114,10 +116,10 @@ class Register extends Component {
           iconWidth={40}
           inputPadding={16}
           secureTextEntry={true}
-          onChangeText={password => this.setState({password})}
+          onChangeText={password => this.setState({ password })}
         />
         <Text></Text>
-        <View style={{height: 50}}>
+        <View style={{ height: 50 }}>
           <Button text="Sign Up" onPress={this.signup} />
         </View>
         {this.getLoader()}

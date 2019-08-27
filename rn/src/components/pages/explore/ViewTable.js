@@ -85,11 +85,11 @@ class ViewTable extends Component {
   render() {
     return <View>
       {this.getCurrentPlayers()}
-      <Button
+      <ButtonSmall
         text="Request to join"
         onPress={this.createJoinRequest}
       />
-      <Button
+      <ButtonSmall
         text="Back"
         onPress={this.props.return}
       />
