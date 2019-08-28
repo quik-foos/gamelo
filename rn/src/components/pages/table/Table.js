@@ -7,6 +7,8 @@ import Button from '../../ui_elems/Button';
 import ButtonSmall from '../../ui_elems/ButtonSmall';
 import { connect } from 'react-redux';
 import { TableApi, ResultApi } from '../../../api';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 class Table extends Component {
   constructor(props) {
@@ -202,10 +204,9 @@ class Table extends Component {
   getNoneView = () => {
     return <View style={styles.noTable}>
       <Text style={styles.noTableText}>You're not part of any table.</Text>
-      <ButtonSmall
-        text="Create a table"
-        onPress={this.goToCreateView}
-      />
+      <TouchableOpacity style={{ alignSelf: 'center' }} onPress={this.goToCreateView}>
+          <Icon name="ios-add-circle-outline" color='green' size={50} />
+        </TouchableOpacity>
     </View>;
   }
 

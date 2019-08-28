@@ -13,7 +13,7 @@ export default (server, type) => {
       return server.put(`${type}/${params.id}`, params);
     },
     destroy(params) {
-      return server.delete(`${type}/${params.id}`);
+      return server.delete(`${type}`, params );
     },
   }
 }

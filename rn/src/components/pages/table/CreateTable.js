@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import RNGooglePlaces from 'react-native-google-places';
 import FontAwesomeIcon5 from 'react-native-vector-icons/FontAwesome5';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const moment = require('moment');
@@ -49,14 +50,14 @@ class CreateTable extends Component {
   }
 
   setStartDateTime = dateTime => {
-    formatted = `${dateTime}`.split("").slice(0,21).join('')
+    formatted = `${dateTime}`.split("").slice(0, 21).join('')
     this.setState({
       startDateTime: formatted
     });
   }
 
   setEndDateTime = dateTime => {
-    formatted = `${dateTime}`.split("").slice(0,21).join('')
+    formatted = `${dateTime}`.split("").slice(0, 21).join('')
     this.setState({
       endDateTime: dateTime
     });
@@ -107,14 +108,14 @@ class CreateTable extends Component {
         startTime: this.state.startDateTime,
         endTime: this.state.endDateTime,
         maxPlayers: this.state.maxPlayers,
-        location: 
+        location:
         {
           lng: this.state.longitude,
           lat: this.state.latitude
         },
         status: "Scheduled"
       });
-    } catch(e) {
+    } catch (e) {
       console.log(e)
     }
     this.cancelTable()
@@ -128,10 +129,9 @@ class CreateTable extends Component {
     return this.state.games.map((game, id) =>
       <View key={id}>
         <Text>{game.name}</Text>
-        <ButtonSmall
-          text="remove"
-          onPress={() => { this.removeGame(game) }}
-        />
+        <TouchableOpacity onPress={() => { this.removeGame(game) }}>
+          <Icon name="ios-remove-circle-outline" color='blue' size={25} />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -161,7 +161,6 @@ class CreateTable extends Component {
           <Text></Text>
         </View>
         <View height={90}>
-          <Text>End Date and Time</Text>
           <DateTimeInput
             label="End Date and time"
             onChangeDate={this.setEndDateTime}
@@ -169,9 +168,9 @@ class CreateTable extends Component {
           />
           <Text></Text>
         </View>
-        <View height={90}>
+        <View height={90} width={200}>
           <Text>Max players</Text>
-          <Picker
+          <Picker 
             selectedValue={this.state.maxPlayers}
             onValueChange={(itemValue, itemIndex) =>
               this.setState({ maxPlayers: itemValue })
@@ -188,22 +187,22 @@ class CreateTable extends Component {
             <Picker.Item label="10" value="10" />
           </Picker>
         </View>
-        <View heigth={90}>
-          <Text>Choose games</Text>
+        <View heigth={90} width={200}>
+          <Text>Games</Text>
           {this.getGames()}
           <GamePicker
             onSelectGame={this.addGame}
           />
         </View>
       </View>
-      <ButtonSmall
-        text="Cancel"
-        onPress={this.cancelTable}
-      />
-      <ButtonSmall
-        text="Create"
-        onPress={this.createTable}
-      />
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={this.cancelTable}>
+          <Icon name="ios-checkmark-circle-outline" color='green' size={50} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={this.createTable}>
+          <Icon name="ios-close-circle-outline" color='red' size={50} />
+        </TouchableOpacity>
+      </View>
     </ScrollView>;
   }
 }
@@ -213,6 +212,11 @@ const mapStateToProps = state => ({
 })
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around"
+  },
   container: {
     padding: 15,
     margin: 15,
