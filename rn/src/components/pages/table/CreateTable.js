@@ -196,10 +196,10 @@ class CreateTable extends Component {
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={this.cancelTable}>
+        <TouchableOpacity onPress={this.createTable}>
           <Icon name="ios-checkmark-circle-outline" color='green' size={50} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.createTable}>
+        <TouchableOpacity onPress={this.cancelTable}>
           <Icon name="ios-close-circle-outline" color='red' size={50} />
         </TouchableOpacity>
       </View>
