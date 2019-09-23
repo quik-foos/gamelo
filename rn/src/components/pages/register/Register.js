@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   ActivityIndicator,
   Text,
@@ -6,17 +6,16 @@ import {
   TextInput,
   StatusBar,
   Alert,
-  ToastAndroid,
-} from 'react-native';
-import FontAwesomeIcon5 from 'react-native-vector-icons/FontAwesome5';
-import { Fumi } from 'react-native-textinput-effects';
-import { connect } from 'react-redux';
-import Input from '../../ui_elems/Input';
-import Button from '../../ui_elems/Button';
-import { UserApi } from '../../../api';
-import { loginAction } from '../../../actions';
-import { BUTTON_COLOR } from '../../../constants';
-
+  ToastAndroid
+} from 'react-native'
+import FontAwesomeIcon5 from 'react-native-vector-icons/FontAwesome5'
+import { Fumi } from 'react-native-textinput-effects'
+import { connect } from 'react-redux'
+import Input from '../../ui_elems/Input'
+import Button from '../../ui_elems/Button'
+import { UserApi } from '../../../api'
+import { loginAction } from '../../../actions'
+import { BUTTON_COLOR } from '../../../constants'
 
 class Register extends Component {
   state = {
@@ -25,8 +24,8 @@ class Register extends Component {
     email: '',
     username: '',
     password: '',
-    loading: false,
-  };
+    loading: false
+  }
 
   signup = async () => {
     this.setState({ loading: true })
@@ -36,20 +35,20 @@ class Register extends Component {
         lastName: this.state.lastName,
         email: this.state.email,
         username: this.state.username,
-        password: this.state.password,
-      });
+        password: this.state.password
+      })
       let res = await UserApi.login({
         username: this.state.username,
-        password: this.state.password,
-      });
+        password: this.state.password
+      })
       let user = await res.data.user._id
-      await this.setState({ loading: false });
-      await this.props.dispatch(loginAction(user));
+      await this.setState({ loading: false })
+      await this.props.dispatch(loginAction(user))
     } catch (e) {
-      await this.setState({ loading: false });
-      ToastAndroid.show(e.response.data.message, ToastAndroid.SHORT);
+      await this.setState({ loading: false })
+      ToastAndroid.show(e.response.data.message, ToastAndroid.SHORT)
     }
-  };
+  }
 
   getLoader = () => {
     if (this.state.loading)
@@ -58,14 +57,13 @@ class Register extends Component {
           <ActivityIndicator size="large" color={BUTTON_COLOR} />
         </View>
       )
-  };
+  }
 
   render() {
     return (
       <View>
         <StatusBar backgroundColor="#055" barStyle="light-content" />
-        <Text>
-        </Text>
+        <Text></Text>
         <Fumi
           label={'First Name'}
           iconClass={FontAwesomeIcon5}
@@ -124,8 +122,8 @@ class Register extends Component {
         </View>
         {this.getLoader()}
       </View>
-    );
+    )
   }
 }
 
-export default connect()(Register);
+export default connect()(Register)

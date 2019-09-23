@@ -1,12 +1,12 @@
-import { SET_TABLE_ACTION } from '../actions/types';
+import { SET_TABLE_ACTION } from '../actions/types'
 
 export default (state = '', action) => {
-  console.log(state);
-  console.log(action);
+  console.log(state)
+  console.log(action)
   switch (action.type) {
     case SET_TABLE_ACTION:
-      return action.table;
+      return action.table
     default:
-      return state;
+      return state
   }
-};
+}

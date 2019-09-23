@@ -8,26 +8,27 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
-import React from 'react';
-import {Text, StyleSheet, ImageBackground} from 'react-native';
-import Colors from '../../../../node_modules/react-native/Libraries/NewAppScreen/components/Colors';
+import React from 'react'
+import { Text, StyleSheet, ImageBackground } from 'react-native'
+import Colors from '../../../../node_modules/react-native/Libraries/NewAppScreen/components/Colors'
 
 const BackgroundImage = props => (
   <ImageBackground
     accessibilityRole={'image'}
     source={require('./bg.png')}
     style={styles.background}
-    imageStyle={styles.logo}></ImageBackground>
-);
+    imageStyle={styles.logo}
+  ></ImageBackground>
+)
 
 const styles = StyleSheet.create({
   background: {
     paddingBottom: 200,
     paddingTop: 100,
     paddingHorizontal: 32,
-    backgroundColor: Colors.lighter,
+    backgroundColor: Colors.lighter
   },
   logo: {
     opacity: 1,
@@ -40,14 +41,14 @@ const styles = StyleSheet.create({
      * source image's size.
      */
     marginLeft: 0,
-    marginBottom: 0,
+    marginBottom: 0
   },
   text: {
     fontSize: 40,
     fontWeight: '600',
     textAlign: 'center',
-    color: 'black',
-  },
-});
+    color: 'black'
+  }
+})
 
-export default BackgroundImage;
+export default BackgroundImage
