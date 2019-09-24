@@ -1,0 +1,14 @@
+// {
+//   "extends": [
+//     "prettier",
+//     "eslint:recommended"
+//   ],
+//   "rules": {
+//     "prettier/prettier": [
+//       "error",
+//       {
+//       "semicolon": false
+//       }
+//     ]
+//   }
+// }
