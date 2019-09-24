@@ -11,6 +11,7 @@ class Navigator extends Component {
   getNavigator() {
     // return this.props.user ? <BottomNavigator /> : <Playground />
     return this.props.user ? <BottomNavigator /> : <StackNavigator />
+    // return this.props.user ? <StackNavigator /> : <BottomNavigator />
   }
 
   componentDidMount() {

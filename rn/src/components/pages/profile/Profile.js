@@ -16,6 +16,7 @@ import { logoutAction } from '../../../actions'
 import ButtonSmall from '../../../components/ui_elems/ButtonSmall'
 import { ScrollView } from 'react-native-gesture-handler'
 
+const INACTIVE_COLOR = '#dddddd'
 class Profile extends Component {
   state = {
     firstName: '',
@@ -24,7 +25,9 @@ class Profile extends Component {
     games: [],
     email: '',
     loading: false,
-    view: 'history',
+    gameHistoryFontColor: INACTIVE_COLOR,
+    gameSummaryFontColor: BUTTON_COLOR,
+    view: 'summary',
     gameHistory: [],
     gameSummary: [
       { game: 'Catan', played: 112, elo: 1600 },
@@ -83,12 +86,16 @@ class Profile extends Component {
 
   displayHistory = () => {
     this.setState({
-      view: 'history'
+      view: 'history',
+      gameHistoryFontColor: BUTTON_COLOR,
+      gameSummaryFontColor: INACTIVE_COLOR
     })
   }
   displaySummary = () => {
     this.setState({
-      view: 'summary'
+      view: 'summary',
+      gameSummaryFontColor: BUTTON_COLOR,
+      gameHistoryFontColor: INACTIVE_COLOR
     })
   }
 
@@ -149,8 +156,37 @@ class Profile extends Component {
             </Text>
             <ButtonSmall text="Sign Out" onPress={this.signout} />
             <View style={buttonContainer}>
-              <ButtonSmall text="Game History" onPress={this.displayHistory} />
-              <ButtonSmall text="Game Summary" onPress={this.displaySummary} />
+              <TouchableOpacity
+                style={{
+                  padding: 20,
+                  borderBottomWidth: 0.5,
+                  borderRightWidth: 0.5
+                }}
+                onPress={this.displayHistory}
+              >
+                <Text
+                  style={{
+                    fontSize: 20,
+                    color: this.state.gameHistoryFontColor
+                  }}
+                >
+                  Game History
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{ padding: 20, borderBottomWidth: 0.5 }}
+                onPress={this.displaySummary}
+              >
+                <Text
+                  style={{
+                    fontSize: 20,
+                    color: this.state.gameSummaryFontColor
+                  }}
+                >
+                  Game Summary
+                </Text>
+              </TouchableOpacity>
             </View>
             {this.state.view === 'history' ? History : EloSummary}
           </View>
@@ -165,15 +201,17 @@ const styles = StyleSheet.create({
     height: 200
   },
   historyView: {
+    marginTop: 20,
+    borderRadius: 4,
     width: 300,
     padding: 30,
-    borderRadius: 30,
     backgroundColor: '#bfdfbf'
   },
   summaryView: {
+    borderRadius: 4,
+    marginTop: 20,
     width: 300,
     padding: 20,
-    borderRadius: 30,
     backgroundColor: '#bfdfbf',
     alignSelf: 'auto'
   },

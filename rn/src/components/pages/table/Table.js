@@ -8,6 +8,8 @@ import ButtonSmall from '../../ui_elems/ButtonSmall'
 import { connect } from 'react-redux'
 import { TableApi, ResultApi } from '../../../api'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { BACKGROUND_COLOR, BUTTON_COLOR } from '../../../constants'
+
 
 class Table extends Component {
   constructor(props) {
@@ -198,9 +200,10 @@ class Table extends Component {
         <Text style={styles.noTableText}>You're not part of any table.</Text>
         <TouchableOpacity
           style={{ alignSelf: 'center' }}
-          onPress={this.goToCreateView}
+          // onPress={this.goToCreateView}
+          onPress={() => this.props.navigation.navigate('CreateTable1')}
         >
-          <Icon name="ios-add-circle-outline" color="green" size={50} />
+          <Icon name="ios-add-circle-outline" color={BUTTON_COLOR} size={50} />
         </TouchableOpacity>
       </View>
     )
@@ -408,7 +411,8 @@ const styles = StyleSheet.create({
   },
   noTableText: {
     fontSize: 24,
-    paddingBottom: 35
+    paddingBottom: 35,
+    color: BUTTON_COLOR
   }
 })
 

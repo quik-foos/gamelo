@@ -13,9 +13,13 @@ export default class NearbyTable extends Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={this.props.onPress}>
-        <View style={{ flex: 1, flexDirection: 'column' }}>
-          <View style={{ flexDirection: 'row' }}>
+      <TouchableOpacity
+        onPress={() =>
+          this.props.navigation.navigate('JoinTable', { name: this.props.host })
+        }
+      >
+        <View>
+          <View>
             <Card>
               <CardSection>
                 <View>

@@ -1,13 +1,9 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import DateTimePicker from 'react-native-modal-datetime-picker'
+import { BUTTON_COLOR } from '../../constants'
 const moment = require('moment')
-const styles = StyleSheet.create({
-  timePickerLabel: {
-    marginTop: 10,
-    fontSize: 18
-  }
-})
+
 export default class DateTimeInput extends Component {
   constructor(props) {
     super(props)
@@ -28,10 +24,14 @@ export default class DateTimeInput extends Component {
       <View>
         <Text style={styles.timePickerLabel}>{this.props.label}</Text>
         <TouchableOpacity onPress={this.showPicker}>
-          <Text>
+          <Text
+            style={{ fontSize: 18, color: BUTTON_COLOR, textAlign: 'center' }}
+          >
             {this.props.date
-              ? moment(this.props.date).format('YYYY-MM-DD h:mm a')
-              : 'select'}
+              ? moment(this.props.date).format('YYYY-MM-DD') +
+                ' at ' +
+                moment(this.props.date).format('h:mm a')
+              : 'Select Date'}
           </Text>
         </TouchableOpacity>
         <DateTimePicker
@@ -47,3 +47,12 @@ export default class DateTimeInput extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  timePickerLabel: {
+    marginTop: 10,
+    marginBottom: 15,
+    color: BUTTON_COLOR,
+    textAlign: 'center'
+  }
+})
